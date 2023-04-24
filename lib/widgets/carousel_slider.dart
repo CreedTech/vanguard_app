@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -34,17 +36,20 @@ class _SliderWidgetState extends State<SliderWidget> {
     double sliderHeight = sliderDynamicScreen(screenHeight);
     return Column(
       children: [
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          width: 400,
-          height: 150,
-          decoration: const BoxDecoration(
-            color: kSecondaryColor,
-          ),
-          child: const Center(
-            child: Text(
-              "ADS"
+        Padding(
+          padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
+          child: Container(
+            // margin: const EdgeInsets.only(top: 8),
+            width: double.infinity,
+            height: 150,
+            decoration:  const BoxDecoration(
+              color: Colors.white,
+                // border: Border.all(color: Colors.redAccent),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+              ),
             ),
+            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
           ),
         ),
         CarouselSlider.builder(
@@ -82,14 +87,42 @@ class _SliderWidgetState extends State<SliderWidget> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16.0),
-                        child: ProgressiveImage(
-                          placeholder:
-                              const AssetImage('assets/images/splash.png'),
-                          thumbnail: NetworkImage(apiData["imageUrl"]),
-                          image: NetworkImage(apiData["imageUrl"]),
+                        child: CachedNetworkImage(
                           width: double.infinity,
                           height: double.infinity,
+                          imageUrl: apiData["imageUrl"] ?? '',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url){
+                            return Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: const BoxDecoration(
+                                  // borderRadius: BorderRadius.circular(5.0),
+
+                                ),
+                                child: const CupertinoActivityIndicator(
+                                  radius: 20,
+                                  color: kSecondaryColor,
+                                ),);
+                          },
+                          errorWidget: (context, url, error) => Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: const BoxDecoration(
+                              // borderRadius: BorderRadius.circular(5.0),
+
+                            ),
+                            child: Image.asset('assets/images/logo_full.png'),
+                          ),
                         ),
+                        // ProgressiveImage(
+                        //   placeholder:
+                        //       const AssetImage('assets/images/splash.png'),
+                        //   thumbnail: NetworkImage(apiData["imageUrl"]),
+                        //   image: NetworkImage(apiData["imageUrl"]),
+                        //   width: double.infinity,
+                        //   height: double.infinity,
+                        // ),
                       ),
                       Positioned(
                         bottom: 0,

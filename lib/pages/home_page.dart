@@ -26,19 +26,19 @@ class HomePage extends StatelessWidget {
   final List<Widget> newsCard = const [
     NewsCard(id: 14072),
     NewsCard(id: 6),
-    NewsCard(id: 1415),
+    NewsCard(id: 952407),
     NewsCard(id: 12),
     NewsCard(id: 37),
     NewsCard(id: 11),
     NewsCard(id: 13),
-    NewsCard(id: 3338),
-    NewsCard(id: 1720),
-    NewsCard(id: 715),
+    NewsCard(id: 16),
+    NewsCard(id: 39),
+    NewsCard(id: 6726),
   ];
 
   //Features - 14072
   // Top Stories - 30762
-  // Latest - 2717
+  // Latest - 8498
 
   @override
   Widget build(BuildContext context) {

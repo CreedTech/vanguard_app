@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -93,13 +95,38 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             pinned: true,
             floating: false,
             flexibleSpace: FlexibleSpaceBar(
-                background: Hero(
-              tag: widget.imageUrl!,
-              child: Image.network(
-                widget.imageUrl!,
-                fit: BoxFit.cover,
+              background: Hero(
+                tag: widget.imageUrl!,
+                child: CachedNetworkImage(
+                  // width: MediaQuery.of(context).size.width / 2.5,
+                  // height: cardHeight,
+                  imageUrl: widget.imageUrl!,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) {
+                    return const CupertinoActivityIndicator(
+                      radius: 20,
+                      color: kSecondaryColor,
+                    );
+                  },
+                  errorWidget: (context, url, error) => Container(
+                    // width: MediaQuery.of(context).size.width / 2.5,
+                    // height: cardHeight,
+                    decoration: const BoxDecoration(
+                        // borderRadius: BorderRadius.circular(5.0),
+
+                        ),
+                    child: Image.asset(
+                      'assets/images/logo_full.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                // Image.network(
+                //   widget.imageUrl!,
+                //   fit: BoxFit.cover,
+                // ),
               ),
-            )),
+            ),
             expandedHeight: (MediaQuery.of(context).size.height) / 3,
           ),
           SliverToBoxAdapter(
@@ -127,9 +154,24 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             },
             data: widget.title,
           ),
+
           row1(),
           const SizedBox(height: 16),
           row2(),
+          const SizedBox(height: 14),
+          Container(
+            // margin: const EdgeInsets.only(top: 8),
+            width: double.infinity,
+            height: 70,
+            decoration:  const BoxDecoration(
+              color: Colors.white,
+              // border: Border.all(color: Colors.redAccent),
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+            ),
+            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
+          ),
           const SizedBox(height: 14),
 
           //Content Widget
@@ -160,6 +202,20 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             },
             data: widget.content,
           ),
+          const SizedBox(height: 14),
+          Container(
+            // margin: const EdgeInsets.only(top: 8),
+            width: double.infinity,
+            height: 70,
+            decoration:  const BoxDecoration(
+              color: Colors.white,
+              // border: Border.all(color: Colors.redAccent),
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+            ),
+            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
+          ),
         ],
       ),
     );
@@ -181,10 +237,10 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             Text(
               widget.date!,
               style: TextStyle(
-                  fontSize: 14,
-                  // color: isDarkTheme
-                  //     ? Colors.white
-                  //     : Colors.black.withOpacity(0.60),
+                fontSize: 14,
+                // color: isDarkTheme
+                //     ? Colors.white
+                //     : Colors.black.withOpacity(0.60),
                 color: Colors.black.withOpacity(0.60),
               ),
             ),
@@ -201,9 +257,9 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             Text(
               widget.authorName!,
               style: TextStyle(
-                  // color: isDarkTheme
-                  //     ? Colors.white
-                  //     : Colors.black.withOpacity(0.60)
+                // color: isDarkTheme
+                //     ? Colors.white
+                //     : Colors.black.withOpacity(0.60)
                 color: Colors.black.withOpacity(0.60),
               ),
             ),
@@ -235,13 +291,14 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
                   child: Container(
                       padding: const EdgeInsets.only(left: 14, right: 14),
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(129, 224, 224, 224),
+                          color: kSecondaryColor,
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Center(
                         child: Text(
                           postCategoryName ?? 'News',
                           style: const TextStyle(
                             fontSize: 12,
+                            color: Colors.white,
                           ),
                         ),
                       )),

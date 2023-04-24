@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newsgig/utilities/constants.dart';
 import 'package:newsgig/widgets/shimmer_effect.dart';
@@ -74,84 +75,93 @@ class _CategoryPostsState extends State<CategoryPosts> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              backgroundColor: kSecondaryColor,
-              leadingWidth: 62,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 6),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kSecondaryColor,
+        title: Text("${widget.categoryName}"),
+        centerTitle: true,
+      ),
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullUp: true,
+        header: const WaterDropHeader(
+          waterDropColor: kSecondaryColor,
+        ),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus? mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = const Text("pull up load");
+            } else if (mode == LoadStatus.loading) {
+              body = const CupertinoActivityIndicator(
+                color: kSecondaryColor,
+              );
+            } else if (mode == LoadStatus.failed) {
+              body = const Text("Load Failed!Click retry!");
+            } else if (mode == LoadStatus.canLoading) {
+              body = const Text("release to load more");
+            } else {
+              body = const Text("No more Data");
+            }
+            return SizedBox(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        onRefresh: () async {
+          final result = await getPostData(isRefresh: true);
+          if (result == true) {
+            refreshController.refreshCompleted();
+          } else {
+            refreshController.refreshFailed();
+          }
+        },
+        onLoading: () async {
+          final result = await getPostData(isRefresh: false);
+          if (result == true) {
+            refreshController.loadComplete();
+          } else {
+            refreshController.loadNoData();
+          }
+        },
+        child: refresh
+            ? Stack(
+          fit: StackFit.expand,
+          children: const [
+            Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: CupertinoActivityIndicator(
+                  radius: 20,
+                  color: kSecondaryColor,
                 ),
               ),
-              // snap: true,
-              pinned: true,
-              floating: true,
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                collapseMode: CollapseMode.parallax,
-                  titlePadding: EdgeInsets.only(bottom: 80),
-                  title: Text("${widget.categoryName}"),
-                  background: Container(
-                    color: kSecondaryColor,
-                  ),
-              ),
-              expandedHeight: (MediaQuery.of(context).size.height) / 4.5,
             ),
           ],
-          body: SmartRefresher(
-            controller: refreshController,
-            enablePullUp: true,
-            onRefresh: () async {
-              final result = await getPostData(isRefresh: true);
-              if (result == true) {
-                refreshController.refreshCompleted();
-              } else {
-                refreshController.refreshFailed();
-              }
-            },
-            onLoading: () async {
-              final result = await getPostData(isRefresh: false);
-              if (result == true) {
-                refreshController.loadComplete();
-              } else {
-                refreshController.loadNoData();
-              }
-            },
-            child: refresh
-                ? ShimmerEffect(slider: false)
-                : ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      final postData = posts[index];
-                      Map apiData = apiDataAccess(postData);
+        )
+            : ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (context, index) {
+            final postData = posts[index];
+            Map apiData = apiDataAccess(postData);
 
-                      return NewsCardSkeleton(
-                        postId: apiData["id"],
-                        link: apiData["link"],
-                        title: apiData["title"],
-                        imageUrl: apiData["imageUrl"],
-                        content: apiData["content"],
-                        date: apiData["date"],
-                        avatarUrl: apiData["avatarUrl"],
-                        authorName: apiData["authorName"],
-                        categoryIdNumbers: apiData["categoryIdNumbers"],
-                        shortDescription: apiData["shortDesc"],
-                      );
-                    },
-                  ),
-          ),
+            return NewsCardSkeleton(
+              postId: apiData["id"],
+              link: apiData["link"],
+              title: apiData["title"],
+              imageUrl: apiData["imageUrl"],
+              content: apiData["content"],
+              date: apiData["date"],
+              avatarUrl: apiData["avatarUrl"],
+              authorName: apiData["authorName"],
+              categoryIdNumbers: apiData["categoryIdNumbers"],
+              shortDescription: apiData["shortDesc"],
+            );
+          },
         ),
+
       ),
     );
   }

@@ -161,13 +161,17 @@ class _MainHomeState extends State<MainHome> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: kSecondaryColor,
-        title: Text(
-          appBarTitle,
-          style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Colors.white,
+        // title: Text(
+        //   appBarTitle,
+        //   style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        // ),
         elevation: 0,
-        // leadingWidth: MediaQuery.of(context).size.width < 300 ? 74 : 90,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Image.asset("assets/images/splash.png", height: 200,width: 250,scale: 4,),
+        ),
+        leadingWidth: MediaQuery.of(context).size.width < 300 ? 200 : 150,
         // leading: TextButton(
         //     style: ButtonStyle(
         //       padding: MaterialStateProperty.all<EdgeInsets>(
@@ -185,6 +189,7 @@ class _MainHomeState extends State<MainHome> {
             },
             icon: const Icon(
               CustomIcon.search,
+              color: kSecondaryColor,
             ),
             iconSize: iconSize,
           ),
@@ -195,7 +200,7 @@ class _MainHomeState extends State<MainHome> {
               //     MaterialPageRoute(
               //         builder: ((context) => const NotificationPage())));
             },
-            icon: const Icon(CustomIcon.notification),
+            icon: const Icon(CustomIcon.notification,color: kSecondaryColor,),
             iconSize: iconSize,
           ),
           const SizedBox(width: 10),

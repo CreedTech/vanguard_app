@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:newsgig/utilities/constants.dart';
@@ -46,6 +47,7 @@ class _SearchPageState extends State<SearchPage> {
         appBar: AppBar(
           backgroundColor: kSecondaryColor,
           title: const Text("Search"),
+          centerTitle: true,
         ),
         body: Column(
           children: [
@@ -69,6 +71,7 @@ class _SearchPageState extends State<SearchPage> {
                     padding: EdgeInsetsDirectional.only(start: 16, end: 10),
                     child: Icon(
                       Icons.search,
+                      color: kSecondaryColor,
                     ),
                   ),
                   filled: true,
@@ -84,7 +87,21 @@ class _SearchPageState extends State<SearchPage> {
                   valueListenable: searchPosts,
                   builder: (context, posts, _) {
                     return isLoading
-                        ? const ShimmerEffect(slider: false)
+                        ? Stack(
+                            fit: StackFit.expand,
+                            children: const [
+                              Center(
+                                child: SizedBox(
+                                  width: 200,
+                                  height: 200,
+                                  child: CupertinoActivityIndicator(
+                                    radius: 20,
+                                    color: kSecondaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         : ListView.builder(
                             itemCount: searchPosts.value.length,
                             itemBuilder: ((context, index) {

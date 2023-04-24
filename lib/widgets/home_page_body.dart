@@ -41,7 +41,7 @@ class _NewsCardState extends State<NewsCard> {
 
   Future<bool> getSliderData() async {
     final Uri latestPostUrls = Uri.parse(
-        "${Config.apiURL}${Config.categoryPostURL}${widget.id} &page=$currentPage");
+        "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
     final response = await http.get(latestPostUrls);
     if (response.statusCode == 200) {
       final result = postDataFromJson(response.body);
@@ -134,7 +134,9 @@ class _NewsCardState extends State<NewsCard> {
       enablePullUp: true,
       onRefresh: onRefresh,
       onLoading: onLoading,
-      header: const WaterDropHeader(),
+      header: const WaterDropHeader(
+        waterDropColor: kSecondaryColor,
+      ),
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus? mode) {
           Widget body;

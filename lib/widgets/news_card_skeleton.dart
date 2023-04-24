@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -60,22 +61,22 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.only(top: 8),
-            width: 400,
-            height: 70,
-            decoration:  const BoxDecoration(
-              color: kSecondaryColor,
-            ),
-            child: const Center(
-              child: Text(
-                  "ADS",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   margin: const EdgeInsets.only(top: 8),
+          //   width: 400,
+          //   height: 70,
+          //   decoration:  const BoxDecoration(
+          //     color: Colors.white,
+          //   ),
+          //   child: const Center(
+          //     child: Text(
+          //         "ADS",
+          //       style: TextStyle(
+          //         color: Colors.black,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           InkWell(
             onTap: () {
               Navigator.push(
@@ -112,24 +113,27 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                       width: 115,
                       height: 100,
                       child: Hero(
-                        tag: widget.imageUrl,
+                        tag: widget.imageUrl?? '',
                         child:
                           CachedNetworkImage(
                               // width: MediaQuery.of(context).size.width / 2.5,
                               // height: cardHeight,
-                            imageUrl: widget.imageUrl,
+                            imageUrl: widget.imageUrl?? '',
                             fit: BoxFit.cover,
                             placeholder: (context, url){
-                              return Image.asset('assets/images/loader.gif');
+                              return const CupertinoActivityIndicator(
+                                radius: 20,
+                                color: kSecondaryColor,
+                              );
                             },
                             errorWidget: (context, url, error) => Container(
-                              height: 100.0,
-                              width: 100.0,
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              height: cardHeight,
                               decoration: const BoxDecoration(
                                 // borderRadius: BorderRadius.circular(5.0),
 
                               ),
-                              child: const Icon(Icons.error),
+                              child: Image.asset('assets/images/logo_full.png'),
                             ),
                           ),
                         // ProgressiveImage(
@@ -165,7 +169,7 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.7,
+                          width: MediaQuery.of(context).size.width / 1.8,
                           child: Html(style: {
                             "body": Style(
                               padding: EdgeInsets.zero,
@@ -178,7 +182,8 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                           }, data: widget.title),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.7,
+                          width: MediaQuery.of(context).size.width / 1.8,
+                          height: 60,
                           child: Html(style: {
                             "body": Style(
                               padding: EdgeInsets.zero,
@@ -240,12 +245,12 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                         //   // ),
                         // ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.7,
+                          width: MediaQuery.of(context).size.width / 1.8,
                           child: Row(
                             children: [
                               Icon(
-                                Icons.schedule_outlined,
-                                color: Colors.black,
+                                Icons.access_time_filled_rounded,
+                                color: kSecondaryColor,
                                 size: screenWidth > 400 ? 12 : 10,
                               ),
                               const SizedBox(width: 5),
