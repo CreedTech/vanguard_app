@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'package:newsgig/utilities/constants.dart';
+import 'package:Vanguard/utilities/constants.dart';
 import '../model/post_data.dart';
 import '../providers/connectivity_provider.dart';
 import '../services/weather.dart';

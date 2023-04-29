@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:newsgig/utilities/constants.dart';
+import 'package:Vanguard/utilities/constants.dart';
 import '../utilities/config.dart';
 import '../model/post_data.dart';
 import '../utilities/wp_api_data_access.dart';

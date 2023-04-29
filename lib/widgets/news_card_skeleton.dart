@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:newsgig/utilities/get_category.dart';
+import 'package:Vanguard/utilities/get_category.dart';
 import 'package:progressive_image/progressive_image.dart';
 import 'package:provider/provider.dart';
 

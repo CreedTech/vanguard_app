@@ -3,11 +3,11 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:newsgig/utilities/constants.dart';
-import 'package:newsgig/widgets/shimmer_effect.dart';
+import 'package:Vanguard/utilities/constants.dart';
+import 'package:Vanguard/widgets/shimmer_effect.dart';
 import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
-import 'package:newsgig/utilities/config.dart';
+import 'package:Vanguard/utilities/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

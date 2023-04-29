@@ -1,8 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 

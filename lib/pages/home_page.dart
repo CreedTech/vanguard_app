@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:newsgig/utilities/constants.dart';
-import 'package:newsgig/providers/theme_provider.dart';
-import 'package:newsgig/widgets/home_page_body.dart';
+import 'package:Vanguard/utilities/constants.dart';
+import 'package:Vanguard/providers/theme_provider.dart';
+import 'package:Vanguard/widgets/home_page_body.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
