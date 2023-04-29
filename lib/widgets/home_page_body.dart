@@ -28,7 +28,7 @@ class NewsCard extends StatefulWidget {
 }
 
 class _NewsCardState extends State<NewsCard> {
-  WeatherModel weather = WeatherModel();
+  // WeatherModel weather = WeatherModel();
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);

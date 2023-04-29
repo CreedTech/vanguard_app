@@ -51,7 +51,7 @@ void main(List<String> args) async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ConnectivityProvider>(
         create: (context) => ConnectivityProvider()),
-    ChangeNotifierProvider<WeatherData>(create: (context) => WeatherData()),
+    // ChangeNotifierProvider<WeatherData>(create: (context) => WeatherData()),
     // ChangeNotifierProvider<ThemeProvider>(create: (context) => ThemeProvider()),
     ChangeNotifierProvider<LocaleProvider>(
         create: (context) => LocaleProvider()),
@@ -107,39 +107,39 @@ class _MainHomeState extends State<MainHome> {
   ];
 
   // OneSignal Push Notification init Function
-  Future<void> initPlatformState() async {
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-    OneSignal.shared.setAppId(Config.oneSignalAppId);
+  // Future<void> initPlatformState() async {
+  //   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  //   OneSignal.shared.setAppId(Config.oneSignalAppId);
 
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      saveNotification(
-        notificationId: result.notification.notificationId,
-        title: result.notification.title ?? "",
-        body: result.notification.body,
-      );
-      globals.appNavigator.currentState!
-          .push(MaterialPageRoute(builder: (context) {
-        return const NotificationPage();
-      }));
-    });
+  //   OneSignal.shared
+  //       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+  //     saveNotification(
+  //       notificationId: result.notification.notificationId,
+  //       title: result.notification.title ?? "",
+  //       body: result.notification.body,
+  //     );
+  //     globals.appNavigator.currentState!
+  //         .push(MaterialPageRoute(builder: (context) {
+  //       return const NotificationPage();
+  //     }));
+  //   });
 
-    OneSignal.shared.setNotificationWillShowInForegroundHandler(
-        (OSNotificationReceivedEvent event) {
-      /// Display Notification, send null to not display
-      if (Provider.of<NotificationProvider>(context).checkNotfication) {
-        event.complete(event.notification);
-      } else {
-        event.complete(null);
-      }
-    });
-  }
+  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
+  //       (OSNotificationReceivedEvent event) {
+  //     /// Display Notification, send null to not display
+  //     if (Provider.of<NotificationProvider>(context).checkNotfication) {
+  //       event.complete(event.notification);
+  //     } else {
+  //       event.complete(null);
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
-    initPlatformState();
+    // initPlatformState();
     Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
-    Provider.of<WeatherData>(context, listen: false).setWeatherData();
+    // Provider.of<WeatherData>(context, listen: false).setWeatherData();
     getCategory();
     super.initState();
   }
@@ -298,7 +298,7 @@ class _MainHomeState extends State<MainHome> {
               ),
 
               GButton(
-                icon: CustomIcon.user,
+                icon: Icons.settings_outlined,
                 iconSize: iconSize,
                 text: AppLocalizations.of(context)!.settings,
               ),

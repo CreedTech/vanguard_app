@@ -9,6 +9,7 @@ import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
 import 'package:newsgig/utilities/config.dart';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../model/post_data.dart';
@@ -43,6 +44,7 @@ class _CategoryPostsState extends State<CategoryPosts> {
     final Uri categoryWiseUrls = Uri.parse(
         "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
 
+    Dio dio = Dio();
     final response = await http.get(categoryWiseUrls);
     print(response);
 
@@ -127,41 +129,40 @@ class _CategoryPostsState extends State<CategoryPosts> {
         },
         child: refresh
             ? Stack(
-          fit: StackFit.expand,
-          children: const [
-            Center(
-              child: SizedBox(
-                width: 200,
-                height: 200,
-                child: CupertinoActivityIndicator(
-                  radius: 20,
-                  color: kSecondaryColor,
-                ),
-              ),
-            ),
-          ],
-        )
+                fit: StackFit.expand,
+                children: const [
+                  Center(
+                    child: SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: CupertinoActivityIndicator(
+                        radius: 20,
+                        color: kSecondaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              )
             : ListView.builder(
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final postData = posts[index];
-            Map apiData = apiDataAccess(postData);
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  final postData = posts[index];
+                  Map apiData = apiDataAccess(postData);
 
-            return NewsCardSkeleton(
-              postId: apiData["id"],
-              link: apiData["link"],
-              title: apiData["title"],
-              imageUrl: apiData["imageUrl"],
-              content: apiData["content"],
-              date: apiData["date"],
-              avatarUrl: apiData["avatarUrl"],
-              authorName: apiData["authorName"],
-              categoryIdNumbers: apiData["categoryIdNumbers"],
-              shortDescription: apiData["shortDesc"],
-            );
-          },
-        ),
-
+                  return NewsCardSkeleton(
+                    postId: apiData["id"],
+                    link: apiData["link"],
+                    title: apiData["title"],
+                    imageUrl: apiData["imageUrl"],
+                    content: apiData["content"],
+                    date: apiData["date"],
+                    avatarUrl: apiData["avatarUrl"],
+                    authorName: apiData["authorName"],
+                    categoryIdNumbers: apiData["categoryIdNumbers"],
+                    shortDescription: apiData["shortDesc"],
+                  );
+                },
+              ),
       ),
     );
   }

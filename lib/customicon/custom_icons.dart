@@ -32,4 +32,5 @@ class CustomIcon {
   static const IconData love = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData menu = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData note = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData settings = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
