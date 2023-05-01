@@ -1,10 +1,10 @@
-import 'package:flare_flutter/flare_actor.dart';
+// import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
 import 'package:Vanguard/utilities/constants.dart';
 import '../model/post_data.dart';
 import '../providers/connectivity_provider.dart';
-import '../services/weather.dart';
+// import '../services/weather.dart';
 import '../utilities/config.dart';
 import '../utilities/get_category.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 import 'carousel_slider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'shimmer_effect.dart';
+// import 'shimmer_effect.dart';
 
 class NewsCard extends StatefulWidget {
   const NewsCard({

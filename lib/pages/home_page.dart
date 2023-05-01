@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Vanguard/utilities/constants.dart';
-import 'package:Vanguard/providers/theme_provider.dart';
+// import 'package:Vanguard/providers/theme_provider.dart';
 import 'package:Vanguard/widgets/home_page_body.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

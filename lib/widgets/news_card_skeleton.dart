@@ -2,19 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:Vanguard/utilities/get_category.dart';
-import 'package:progressive_image/progressive_image.dart';
-import 'package:provider/provider.dart';
+// import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:Vanguard/utilities/get_category.dart';
+// import 'package:progressive_image/progressive_image.dart';
+// import 'package:provider/provider.dart';
 
-import '../customIcon/custom_icons.dart';
-import '../hiveDB/db_function.dart';
-import '../hivedb/boxes.dart';
+// import '../customIcon/custom_icons.dart';
+// import '../hiveDB/db_function.dart';
+// import '../hivedb/boxes.dart';
 import '../pages/news_details_page.dart';
-import '../providers/theme_provider.dart';
+// import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
-import 'package:flare_flutter/flare_actor.dart';
+// import 'package:flare_flutter/flare_actor.dart';
 
 class NewsCardSkeleton extends StatefulWidget {
   final String imageUrl, title, shortDescription, content, date, authorName;
@@ -56,7 +56,7 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double cardHeight = newscardDynamicScreen(screenHeight);
-    final postCategoryName = categoryMap!["${widget.categoryIdNumbers}"];
+    // final postCategoryName = categoryMap!["${widget.categoryIdNumbers}"];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
@@ -113,12 +113,12 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                       width: 115,
                       height: 100,
                       child: Hero(
-                        tag: widget.imageUrl?? '',
+                        tag: widget.imageUrl,
                         child:
                           CachedNetworkImage(
                               // width: MediaQuery.of(context).size.width / 2.5,
                               // height: cardHeight,
-                            imageUrl: widget.imageUrl?? '',
+                            imageUrl: widget.imageUrl,
                             fit: BoxFit.cover,
                             placeholder: (context, url){
                               return const CupertinoActivityIndicator(

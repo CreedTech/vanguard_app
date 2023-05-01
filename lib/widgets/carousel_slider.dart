@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:progressive_image/progressive_image.dart';
-import 'package:provider/provider.dart';
+// import 'package:progressive_image/progressive_image.dart';
+// import 'package:provider/provider.dart';
 
 import '../model/post_data.dart';
 import '../pages/news_details_page.dart';
-import '../providers/theme_provider.dart';
+// import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 import '../utilities/wp_api_data_access.dart';

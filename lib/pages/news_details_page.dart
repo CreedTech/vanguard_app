@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:provider/provider.dart';
+// import 'package:hive_flutter/adapters.dart';
+// import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../hiveDB/db_function.dart';
-import '../hiveDB/boxes.dart';
-import '../providers/theme_provider.dart';
+// import '../hiveDB/db_function.dart';
+// import '../hiveDB/boxes.dart';
+// import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/get_category.dart';
 

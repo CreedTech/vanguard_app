@@ -2,14 +2,15 @@
 
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Vanguard/utilities/constants.dart';
-import 'package:Vanguard/widgets/shimmer_effect.dart';
+// import 'package:Vanguard/widgets/shimmer_effect.dart';
 import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
 import 'package:Vanguard/utilities/config.dart';
 import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../model/post_data.dart';
@@ -44,13 +45,17 @@ class _CategoryPostsState extends State<CategoryPosts> {
     final Uri categoryWiseUrls = Uri.parse(
         "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
 
-    Dio dio = Dio();
+    // Dio dio = Dio();
     final response = await http.get(categoryWiseUrls);
-    print(response);
+    if (kDebugMode) {
+      print(response);
+    }
 
     if (response.statusCode == 200) {
       final result = postDataFromJson(response.body);
-      print(result);
+      if (kDebugMode) {
+        print(result);
+      }
 
       if (isRefresh) {
         posts = result;

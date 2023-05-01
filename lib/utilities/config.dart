@@ -7,5 +7,5 @@ class Config {
   static String searchPosts = "posts?_embed&search=";
 
   // OneSignal Push Notification App Id
-  static String oneSignalAppId = "";
+  static String oneSignalAppId = "18a7f455-9427-411f-8866-112a9c5f4ceb";
 }

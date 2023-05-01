@@ -4,9 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../customicon/custom_icons.dart';
-import '../providers/locale_provider.dart';
+// import '../providers/locale_provider.dart';
 import '../providers/notification_provider.dart';
-import '../providers/theme_provider.dart';
+// import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 
 class SettingsPage extends StatelessWidget {

@@ -6,7 +6,7 @@ import '../utilities/config.dart';
 import '../model/post_data.dart';
 import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
-import '../widgets/shimmer_effect.dart';
+// import '../widgets/shimmer_effect.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);

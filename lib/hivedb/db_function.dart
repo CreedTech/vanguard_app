@@ -14,17 +14,17 @@ void saveArticle({
   avatarUrl,
   categoryIdNumbers,
 }) {
-  final value = {
-    "postId": postId,
-    "imageUrl": imageUrl,
-    "title": title,
-    "shortDescription": shortDescription,
-    "content": content,
-    "date": date,
-    "authorName": authorName,
-    "avatarUrl": avatarUrl,
-    "categoryIdNumbers": categoryIdNumbers,
-  };
+  // final value = {
+  //   "postId": postId,
+  //   "imageUrl": imageUrl,
+  //   "title": title,
+  //   "shortDescription": shortDescription,
+  //   "content": content,
+  //   "date": date,
+  //   "authorName": authorName,
+  //   "avatarUrl": avatarUrl,
+  //   "categoryIdNumbers": categoryIdNumbers,
+  // };
   // final saveArticle = SaveArticle()..articleData = value;
 
   // final key = postId.toString();
