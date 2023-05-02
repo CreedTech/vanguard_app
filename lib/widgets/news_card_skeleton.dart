@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +17,7 @@ import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 // import 'package:flare_flutter/flare_actor.dart';
 import '../utilities/ad_helpers.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NewsCardSkeleton extends StatefulWidget {
@@ -52,7 +54,6 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
 void initState() {
   super.initState();
 
-  // TODO: Load a banner ad
   BannerAd(
     adUnitId: AdHelper.bannerAdUnitId,
     request: const AdRequest(),
@@ -64,7 +65,9 @@ void initState() {
         });
       },
       onAdFailedToLoad: (ad, err) {
-        print('Failed to load a banner ad: ${err.message}');
+        if (kDebugMode) {
+          print('Failed to load a banner ad: ${err.message}');
+        }
         ad.dispose();
       },
     ),

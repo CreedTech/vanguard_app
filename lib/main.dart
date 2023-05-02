@@ -29,12 +29,14 @@ import 'pages/home_page.dart';
 // import 'pages/save_page.dart';
 // import 'theme/theme.dart';
 // import 'utilities/config.dart';
+// ignore: depend_on_referenced_packages
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main(List<String> args) async {
   globals.appNavigator = GlobalKey<NavigatorState>();
 
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   // await Hive.initFlutter();
@@ -135,9 +137,9 @@ class _MainHomeState extends State<MainHome> {
   //     }
   //   });
   // }
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    return MobileAds.instance.initialize();
-  }
+  // Future<InitializationStatus> _initGoogleMobileAds() {
+  //   return MobileAds.instance.initialize();
+  // }
 
   @override
   void initState() {

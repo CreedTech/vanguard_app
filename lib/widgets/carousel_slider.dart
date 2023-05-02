@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -36,7 +37,6 @@ class _SliderWidgetState extends State<SliderWidget> {
 void initState() {
   super.initState();
 
-  // TODO: Load a banner ad
   BannerAd(
     adUnitId: AdHelper.bannerAdUnitId,
     request: const AdRequest(),
@@ -48,7 +48,9 @@ void initState() {
         });
       },
       onAdFailedToLoad: (ad, err) {
-        print('Failed to load a banner ad: ${err.message}');
+        if (kDebugMode) {
+          print('Failed to load a banner ad: ${err.message}');
+        }
         ad.dispose();
       },
     ),
