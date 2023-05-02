@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +7,14 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:progressive_image/progressive_image.dart';
 // import 'package:provider/provider.dart';
-
 import '../model/post_data.dart';
 import '../pages/news_details_page.dart';
 // import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 import '../utilities/wp_api_data_access.dart';
+import '../utilities/ad_helpers.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SliderWidget extends StatefulWidget {
   const SliderWidget({
@@ -26,7 +29,31 @@ class SliderWidget extends StatefulWidget {
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
+  BannerAd? _bannerAd;
   int currentPos = 0;
+
+  @override
+void initState() {
+  super.initState();
+
+  // TODO: Load a banner ad
+  BannerAd(
+    adUnitId: AdHelper.bannerAdUnitId,
+    request: const AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (ad) {
+        setState(() {
+          _bannerAd = ad as BannerAd;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        print('Failed to load a banner ad: ${err.message}');
+        ad.dispose();
+      },
+    ),
+  ).load();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +63,21 @@ class _SliderWidgetState extends State<SliderWidget> {
     double sliderHeight = sliderDynamicScreen(screenHeight);
     return Column(
       children: [
+         if (_bannerAd != null)
         Padding(
           padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
           child: Container(
             // margin: const EdgeInsets.only(top: 8),
             width: double.infinity,
-            height: 150,
-            decoration:  const BoxDecoration(
+            height: 100,
+            decoration: const BoxDecoration(
               color: Colors.white,
-                // border: Border.all(color: Colors.redAccent),
+              // border: Border.all(color: Colors.redAccent),
               borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
+                Radius.circular(5.0),
               ),
             ),
-            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
+            child: AdWidget(ad: _bannerAd!),
           ),
         ),
         CarouselSlider.builder(
@@ -92,26 +120,27 @@ class _SliderWidgetState extends State<SliderWidget> {
                           height: double.infinity,
                           imageUrl: apiData["imageUrl"] ?? '',
                           fit: BoxFit.cover,
-                          placeholder: (context, url){
+                          placeholder: (context, url) {
                             return Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                decoration: const BoxDecoration(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
                                   // borderRadius: BorderRadius.circular(5.0),
 
-                                ),
-                                child: const CupertinoActivityIndicator(
-                                  radius: 20,
-                                  color: kSecondaryColor,
-                                ),);
+                                  ),
+                              child: const CupertinoActivityIndicator(
+                                radius: 20,
+                                color: kSecondaryColor,
+                              ),
+                            );
                           },
                           errorWidget: (context, url, error) => Container(
                             width: double.infinity,
                             height: double.infinity,
                             decoration: const BoxDecoration(
-                              // borderRadius: BorderRadius.circular(5.0),
+                                // borderRadius: BorderRadius.circular(5.0),
 
-                            ),
+                                ),
                             child: Image.asset('assets/images/logo_full.png'),
                           ),
                         ),

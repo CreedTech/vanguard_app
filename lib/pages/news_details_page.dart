@@ -1,5 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 // import 'package:hive_flutter/adapters.dart';
@@ -12,6 +15,8 @@ import 'package:url_launcher/url_launcher.dart';
 // import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/get_category.dart';
+import '../utilities/ad_helpers.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NewsDetailsPage extends StatefulWidget {
   final String? title,
@@ -44,6 +49,53 @@ class NewsDetailsPage extends StatefulWidget {
 
 class _NewsDetailsPageState extends State<NewsDetailsPage>
     with SingleTickerProviderStateMixin {
+
+        BannerAd? _bannerAd;
+        BannerAd? _bannerAd1;
+
+  @override
+void initState() {
+  super.initState();
+
+  BannerAd(
+    adUnitId: AdHelper.bannerAdUnitId,
+    request: const AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (ad) {
+        setState(() {
+          _bannerAd = ad as BannerAd;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        if (kDebugMode) {
+          print('Failed to load a banner ad: ${err.message}');
+        }
+        ad.dispose();
+      },
+    ),
+  ).load();
+
+  BannerAd(
+    adUnitId: AdHelper.bannerAdUnitId,
+    request: const AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (ad) {
+        setState(() {
+          _bannerAd1 = ad as BannerAd;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        if (kDebugMode) {
+          print('Failed to load a banner ad: ${err.message}');
+        }
+        ad.dispose();
+      },
+    ),
+  ).load();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,6 +211,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
           const SizedBox(height: 16),
           row2(),
           const SizedBox(height: 14),
+          if (_bannerAd != null)
           Container(
             // margin: const EdgeInsets.only(top: 8),
             width: double.infinity,
@@ -170,7 +223,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
                 Radius.circular(5.0),
               ),
             ),
-            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
+            child: AdWidget(ad: _bannerAd!),
           ),
           const SizedBox(height: 14),
 
@@ -203,6 +256,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
             data: widget.content,
           ),
           const SizedBox(height: 14),
+          if (_bannerAd1 != null)
           Container(
             // margin: const EdgeInsets.only(top: 8),
             width: double.infinity,
@@ -214,7 +268,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage>
                 Radius.circular(5.0),
               ),
             ),
-            child: Image.asset("assets/images/categorybackground/image5.jpg", fit: BoxFit.cover,),
+            child: AdWidget(ad: _bannerAd1!),
           ),
         ],
       ),

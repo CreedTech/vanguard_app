@@ -29,6 +29,7 @@ import 'pages/home_page.dart';
 // import 'pages/save_page.dart';
 // import 'theme/theme.dart';
 // import 'utilities/config.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main(List<String> args) async {
   globals.appNavigator = GlobalKey<NavigatorState>();
@@ -134,6 +135,9 @@ class _MainHomeState extends State<MainHome> {
   //     }
   //   });
   // }
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    return MobileAds.instance.initialize();
+  }
 
   @override
   void initState() {

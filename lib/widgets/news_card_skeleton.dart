@@ -15,6 +15,8 @@ import '../pages/news_details_page.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 // import 'package:flare_flutter/flare_actor.dart';
+import '../utilities/ad_helpers.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NewsCardSkeleton extends StatefulWidget {
   final String imageUrl, title, shortDescription, content, date, authorName;
@@ -43,13 +45,31 @@ class NewsCardSkeleton extends StatefulWidget {
 }
 
 class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
+  BannerAd? _bannerAd;
   bool isSave = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
+void initState() {
+  super.initState();
 
+  // TODO: Load a banner ad
+  BannerAd(
+    adUnitId: AdHelper.bannerAdUnitId,
+    request: const AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (ad) {
+        setState(() {
+          _bannerAd = ad as BannerAd;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        print('Failed to load a banner ad: ${err.message}');
+        ad.dispose();
+      },
+    ),
+  ).load();
+}
   @override
   Widget build(BuildContext context) {
     // final isDarkTheme = Provider.of<ThemeProvider>(context).darkTheme;
@@ -61,22 +81,20 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          // Container(
-          //   margin: const EdgeInsets.only(top: 8),
-          //   width: 400,
-          //   height: 70,
-          //   decoration:  const BoxDecoration(
-          //     color: Colors.white,
-          //   ),
-          //   child: const Center(
-          //     child: Text(
-          //         "ADS",
-          //       style: TextStyle(
-          //         color: Colors.black,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          if (_bannerAd != null)
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            width: double.infinity,
+            height: 100,
+            decoration:  const BoxDecoration(
+              color: Colors.white,
+                // border: Border.all(color: Colors.redAccent),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+              ),
+            ),
+            child: AdWidget(ad: _bannerAd!),
+          ),
           InkWell(
             onTap: () {
               Navigator.push(
@@ -194,7 +212,7 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                             ),
                             "p": Style(
                               padding: EdgeInsets.zero,
-                              margin: const EdgeInsets.only(top: 1, bottom: 15),
+                              // margin: const EdgeInsets.only(top: 1, bottom: 15),
                             ),
                           }, data: widget.shortDescription),
                         ),
@@ -251,13 +269,13 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                               Icon(
                                 Icons.access_time_filled_rounded,
                                 color: kSecondaryColor,
-                                size: screenWidth > 400 ? 12 : 10,
+                                size: screenWidth > 400 ? 15 : 12,
                               ),
                               const SizedBox(width: 5),
                               Text(
                                 widget.date,
                                 style: TextStyle(
-                                  fontSize: screenWidth > 400 ? 9 : 7,
+                                  fontSize: screenWidth > 400 ? 11 : 9,
                                   color: Colors.black,
                                 ),
                               ),
