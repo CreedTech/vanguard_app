@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../model/post_data.dart';
+import 'package:dio/dio.dart';
 
 class CategoryPosts extends StatefulWidget {
   const CategoryPosts(
@@ -34,45 +36,56 @@ class _CategoryPostsState extends State<CategoryPosts> {
   bool refresh = true;
 
   final RefreshController refreshController = RefreshController();
-  Future<bool> getPostData({bool isRefresh = false}) async {
-    if (isRefresh) {
-      if (mounted) {
-        setState(() {});
-        currentPage = 1;
-        refresh = true;
-      }
+Future<bool> getPostData({bool isRefresh = false}) async {
+  if (isRefresh) {
+    if (mounted) {
+      setState(() {});
+      currentPage = 1;
+      refresh = true;
     }
-    final Uri categoryWiseUrls = Uri.parse(
-        "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
-
-    // Dio dio = Dio();
-    final response = await http.get(categoryWiseUrls);
+  }
+  
+  final Uri categoryWiseUrls = Uri.parse(
+      "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
+  
+  final dio = Dio();
+  try {
+    final response = await dio.get(categoryWiseUrls.toString());
+  
     if (kDebugMode) {
       print(response);
     }
-
+  
     if (response.statusCode == 200) {
-      final result = postDataFromJson(response.body);
+      final jsonStr = json.encode(response.data);
+      final result = postDataFromJson(jsonStr);
+  
       if (kDebugMode) {
         print(result);
       }
-
+  
       if (isRefresh) {
         posts = result;
       } else {
         posts.addAll(result);
       }
+  
       if (mounted) {
         setState(() {});
         currentPage++;
         refresh = false;
       }
-
+  
       return true;
-    } else {
-      return false;
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error getting post data: $e');
     }
   }
+
+  return false;
+}
 
   @override
   void initState() {
