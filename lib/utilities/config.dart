@@ -1,5 +1,5 @@
 class Config {
-  static String websiteUrl = "https://vanguardngr.com";
+  static String websiteUrl = "https://allure.vanguardngr.com";
   static String apiURL = "$websiteUrl/wp-json/wp/v2/";
   static String categoryURl = "categories";
   static String categoryPostURL = "posts?_embed&categories=";
