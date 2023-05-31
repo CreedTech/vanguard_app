@@ -1,6 +1,4 @@
 // import 'package:flare_flutter/flare_actor.dart';
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 // import 'package:hive/hive.dart';
 import 'package:Vanguard/utilities/constants.dart';
@@ -12,9 +10,9 @@ import '../utilities/get_category.dart';
 import 'package:provider/provider.dart';
 import '../utilities/wp_api_data_access.dart';
 import 'news_card_skeleton.dart';
+import 'package:http/http.dart' as http;
 import 'carousel_slider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:dio/dio.dart';
 
 // import 'shimmer_effect.dart';
 
@@ -41,26 +39,18 @@ class _NewsCardState extends State<NewsCard> {
   List<PostData> sliderPosts = [];
   List<PostData> posts = [];
 
-Future<bool> getSliderData() async {
-  final dio = Dio();
-  final Uri latestPostUrls = Uri.parse(
-      "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
-
-  try {
-    final response = await dio.get(latestPostUrls.toString());
-
+  Future<bool> getSliderData() async {
+    final Uri latestPostUrls = Uri.parse(
+        "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
+    final response = await http.get(latestPostUrls);
     if (response.statusCode == 200) {
-      final jsonStr = json.encode(response.data);
-      final result = postDataFromJson(jsonStr);
+      final result = postDataFromJson(response.body);
       sliderPosts = result;
       return true;
     }
-  } catch (e) {
-    print('Error getting slider data: $e');
-  }
 
-  return false;
-}
+    return false;
+  }
 
   Future<bool> getPostData({bool refresh = false}) async {
     if (refresh) {
@@ -69,18 +59,16 @@ Future<bool> getSliderData() async {
         currentPage = widget.id == 14072 ? 2 : 1;
       }
     }
-      final dio = Dio();
     final Uri latestPostUrls = Uri.parse(
         "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
     final Uri categoryWiseUrls = Uri.parse(
         "${Config.apiURL}${Config.categoryPostURL}${widget.id} &page=$currentPage");
 
     final response =
-        await dio.get(widget.id == 14072 ? latestPostUrls.toString() : categoryWiseUrls.toString());
+        await http.get(widget.id == 14072 ? latestPostUrls : categoryWiseUrls);
 
     if (response.statusCode == 200) {
-      final jsonStr = json.encode(response.data);
-      final result = postDataFromJson(jsonStr);
+      final result = postDataFromJson(response.body);
 
       if (refresh) {
         posts = result;
