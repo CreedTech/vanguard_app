@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +7,6 @@ import '../model/post_data.dart';
 import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
 // import '../widgets/shimmer_effect.dart';
-import 'package:dio/dio.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -25,25 +22,17 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
 
   Future<bool> getSearchData({searchTittle}) async {
-  final dio = Dio();
-  final Uri searchesArticle =
-      Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
-
-  try {
-    final response = await dio.get(searchesArticle.toString());
-
+    final Uri searchesArticle =
+        Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
+    final response = await http.get(searchesArticle);
     if (response.statusCode == 200) {
-       final jsonStr = json.encode(response.data);
-      final result = postDataFromJson(jsonStr);
+      final result = postDataFromJson(response.body);
       searchPosts.value = result;
       return true;
     }
-  } catch (e) {
-    print('Error getting search data: $e');
-  }
 
-  return false;
-}
+    return false;
+  }
 
   @override
   void dispose() {
