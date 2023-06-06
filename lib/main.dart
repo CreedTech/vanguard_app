@@ -14,21 +14,21 @@ import 'providers/notification_provider.dart';
 import 'utilities/constants.dart' show kSecondaryColor;
 import 'package:path_provider/path_provider.dart';
 // import 'providers/weather_provider.dart';
-// import 'providers/theme_provider.dart';
+import 'providers/theme_provider.dart';
 import 'customIcon/custom_icons.dart';
 // import 'pages/notification_page.dart';
 // import 'widgets/weather_widget.dart';
 import 'utilities/get_category.dart';
 import 'pages/settings_page.dart';
-// import 'hiveDB/db_function.dart';
+import 'hiveDB/db_function.dart';
 import 'utilities/globals.dart' as globals;
 import 'pages/explore_page.dart';
 import 'pages/search_page.dart';
 import 'hiveDB/local_db.dart';
 import 'pages/home_page.dart';
-// import 'pages/save_page.dart';
-// import 'theme/theme.dart';
-// import 'utilities/config.dart';
+import 'pages/save_page.dart';
+import 'theme/theme.dart';
+import 'utilities/config.dart';
 // ignore: depend_on_referenced_packages
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -42,12 +42,12 @@ void main(List<String> args) async {
   // await Hive.initFlutter();
 
   Hive.registerAdapter(SaveNotificationAdapter());
-  // Hive.registerAdapter(SaveArticleAdapter());
-  // Hive.registerAdapter(DarkThemeAdapter());
+  Hive.registerAdapter(SaveArticleAdapter());
+  Hive.registerAdapter(DarkThemeAdapter());
   Hive.registerAdapter(SaveNotificationOnOffAdapter());
 
-  // await Hive.openBox<SaveArticle>('saveposts');
-  // await Hive.openBox<DarkTheme>('themedata');
+  await Hive.openBox<SaveArticle>('saveposts');
+  await Hive.openBox<DarkTheme>('themedata');
   await Hive.openBox<SaveNotification>('savenotification');
   await Hive.openBox<SaveNotificationOnOff>('saveNotificationOnOff');
 
@@ -153,15 +153,15 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   void dispose() {
-    // Hive.box("saveposts").compact();
-    // Hive.box("saveposts").close();
-    // Hive.box("themedata").close();
+    Hive.box("saveposts").compact();
+    Hive.box("saveposts").close();
+    Hive.box("themedata").close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final isDarkTheme = Provider.of<ThemeProvider>(context).darkTheme;
+    final isDarkTheme = Provider.of<ThemeProvider>(context).darkTheme;
     double screenWidth = MediaQuery.of(context).size.width;
     double iconSize = screenWidth > 300 ? 20 : 18;
 
@@ -184,15 +184,6 @@ class _MainHomeState extends State<MainHome> {
           ),
         ),
         leadingWidth: MediaQuery.of(context).size.width < 300 ? 200 : 150,
-        // leading: TextButton(
-        //     style: ButtonStyle(
-        //       padding: MaterialStateProperty.all<EdgeInsets>(
-        //           const EdgeInsets.all(0)),
-        //     ),
-        //     child: const WeatherWidget(),
-        //     onPressed: () {
-        //       Provider.of<WeatherData>(context, listen: false).setWeatherData();
-        //     }),
         actions: [
           IconButton(
             onPressed: () {
@@ -241,7 +232,7 @@ class _MainHomeState extends State<MainHome> {
             gap: 8,
             activeColor: Colors.black,
             // isDarkTheme ? Colors.white : Colors.black,
-            tabBackgroundColor: Colors.black.withOpacity(0.03),
+            // tabBackgroundColor: Colors.black.withOpacity(0.03),
             // isDarkTheme
             //     ? const Color.fromARGB(255, 36, 36, 71)
             //     : Colors.black.withOpacity(0.03),
@@ -305,17 +296,17 @@ class _MainHomeState extends State<MainHome> {
               GButton(
                 icon: CustomIcon.home,
                 iconSize: iconSize,
-                text: AppLocalizations.of(context)!.home,
+                // text: AppLocalizations.of(context)!.home,
               ),
               GButton(
                 icon: CustomIcon.menu,
                 iconSize: iconSize,
-                text: AppLocalizations.of(context)!.explore,
+                // text: AppLocalizations.of(context)!.explore,
               ),
               GButton(
                 icon: Icons.settings_outlined,
                 iconSize: iconSize,
-                text: AppLocalizations.of(context)!.settings,
+                // text: AppLocalizations.of(context)!.settings,
               ),
             ],
           ),

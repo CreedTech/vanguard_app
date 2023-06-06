@@ -11,6 +11,8 @@ import '../utilities/constants.dart';
 import '../utilities/wp_api_data_access.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../widgets/news_card_skeleton.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -19,42 +21,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // fetchData(refresh: true).then((result) {
+    //   setState(() {
+    //     isRefresh = false;
+    //   });
+    // });
+  }
+
   final RefreshController refreshController =
-      RefreshController(initialRefresh: true);
-  bool isRefresh = true;
+      RefreshController(initialRefresh: true); // Change initialRefresh to false
+  bool isRefresh = true; // Change isRefresh to false
   List<PostData> posts = [];
-  // bool isDataLoaded = false;
-  // bool isMounted = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   isMounted = true;
-  //   fetchData();
-  // }
-
-  // @override
-  // void dispose() {
-  //   isMounted = false;
-  //   super.dispose();
-  // }
 
   Future<bool> fetchData({bool refresh = false}) async {
-    if (refresh) {
-      if (mounted) {
-        setState(() {});
-        // currentPage = 1;
-      }
-    }
     // Simulate data fetching delay
-    // await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Create an instance of Dio
     final dio = Dio();
 
     try {
       // Fetch data for each category ID
-      for (var i = 0; i < homeCategoryIdList.length; i++) {
+      for (var i = 0; i < homeCategoryIdList.length;) {
         final categoryId = homeCategoryIdList[i];
 
         // Make the API request
@@ -65,25 +56,25 @@ class _HomePageState extends State<HomePage> {
 
         if (response.statusCode == 200) {
           // Check if the response data is null or empty list
-          if (response.data != null && response.data is List) {
-            // Parse the response JSON
-            final List<dynamic> data = response.data;
-            final List<PostData> result = data
-                .map((item) => PostData.fromJson(item as Map<String, dynamic>))
-                .toList();
+          // if (response.data != null && response.data is List) {
+          // Parse the response JSON
+          final List<dynamic> data = response.data;
+          final List<PostData> result = data
+              .map((item) => PostData.fromJson(item as Map<String, dynamic>))
+              .toList();
 
-            if (refresh) {
-              posts = result;
-            } else {
-              posts.addAll(result);
-            }
-            if (mounted) {
-              setState(() {});
-              // currentPage++;
-            }
-
-            return true;
+          if (refresh) {
+            posts = result;
+          } else {
+            posts.addAll(result);
           }
+          if (mounted) {
+            setState(() {});
+            // currentPage++;
+          }
+
+          return true;
+          // }
         } else {
           return false;
         }
@@ -95,11 +86,6 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-    // if (isMounted) {
-    //   setState(() {
-    //     isDataLoaded = true;
-    //   });
-    // }
     return true;
   }
 
@@ -141,11 +127,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SmartRefresher(
       controller: refreshController,
@@ -159,7 +140,7 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
-            body = const Text("pull up load");
+            body = const Text("Load more");
           } else if (mode == LoadStatus.loading) {
             body = const CupertinoActivityIndicator(
               color: kSecondaryColor,
@@ -180,15 +161,28 @@ class _HomePageState extends State<HomePage> {
       child: isRefresh
           ? Stack(
               fit: StackFit.expand,
-              children: const [
+              children: [
                 Center(
-                  child: SizedBox(
-                    width: 200,
-                    height: 200,
-                    child: CupertinoActivityIndicator(
-                      radius: 20,
-                      color: kSecondaryColor,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Loading Please wait...",
+                          style: TextStyle(color: kSecondaryColor),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        // height: 200,
+                        child: CupertinoActivityIndicator(
+                          radius: 20,
+                          color: kSecondaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -203,12 +197,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSection(String categoryName, int categoryId) {
+    final screenWidth = MediaQuery.of(context).size.width;
     List<PostData> sectionPosts = [];
 
     Future<void> postsByCats() async {
       final dio = Dio();
       final Uri categoryWiseUrls = Uri.parse(
-          "${Config.apiURL}${Config.categoryPostURL}$categoryId&per_page=1");
+          "${Config.apiURL}${Config.categoryPostURL}$categoryId&per_page=5");
 
       final response = await dio.get(categoryWiseUrls.toString());
 
@@ -230,37 +225,100 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            categoryName,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Container(
+                  // height: Sizes.dimen_14.h,
+                  // width: Sizes.dimen_80.w,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(12.0),
+                  // width: MediaQuery.of(context).size.width * 0.3,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      categoryName.toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: screenWidth * 0.04),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 6,
+                child: Container(
+                  // height: Sizes.dimen_14.h,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(10.0),
+                  // width: MediaQuery.of(context).size.width * 0.7,
+                  decoration: const BoxDecoration(
+                    color: kSecondaryColor,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         FutureBuilder(
           future: postsByCats(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const CupertinoActivityIndicator(
+                color: kSecondaryColor,
+              );
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: sectionPosts.length,
-                itemBuilder: (context, index) {
-                  PostData postData = sectionPosts[index];
-                  Map apiData = apiDataAccess(postData);
-                  return ListTile(
-                    title: Text(apiData["title"]),
-                    // subtitle: Text(postData.description),
-                  );
-                },
-              );
+              if (sectionPosts.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Center(child: Text("No posts available")),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: sectionPosts.length,
+                  itemBuilder: (context, index) {
+                    PostData postData = sectionPosts[index];
+                    Map apiData = apiDataAccess(postData);
+                    return Column(
+                      children: [
+                        const SizedBox.shrink(),
+                        NewsCardSkeleton(
+                          postId: apiData["id"],
+                          link: apiData["link"],
+                          title: apiData["title"],
+                          imageUrl: apiData["imageUrl"],
+                          content: apiData["content"],
+                          date: apiData["date"],
+                          avatarUrl: apiData["avatarUrl"],
+                          authorName: apiData["authorName"],
+                          categoryIdNumbers: apiData["categoryIdNumbers"],
+                          shortDescription: apiData["shortDesc"],
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
             }
           },
         ),
-        const Divider(height: 1, color: Colors.grey),
+        // const Divider(height: 1, color: Colors.grey),
       ],
     );
   }

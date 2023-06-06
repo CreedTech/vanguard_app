@@ -50,7 +50,7 @@ class CategoryCard extends StatelessWidget {
                       margin: EdgeInsets.zero,
                       textOverflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      fontSize: FontSize.large,
+                      fontSize: FontSize.medium,
                         color: const Color.fromARGB(240, 255, 255, 255),
                       fontWeight: FontWeight.bold,
                       textAlign: TextAlign.center,

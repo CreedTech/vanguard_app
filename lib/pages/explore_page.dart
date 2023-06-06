@@ -1,3 +1,4 @@
+import 'package:Vanguard/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Vanguard/utilities/get_category.dart';
 import 'package:Vanguard/widgets/category_card.dart';
@@ -46,11 +47,37 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-          child: Column(children: categoryCards),
-        )),
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: kSecondaryColor,
+          elevation: 0,
+          title: const Text(
+            'Categories',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+          ),
+          child: Column(
+            children: [
+              Flexible(
+                child: GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(10),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 1,
+                  crossAxisCount: 3,
+                  children: categoryCards,
+                ),
+              ),
+            ],
+          )
+          // Column(children: categoryCards)
+          ,
+        ),
       ),
     );
   }
