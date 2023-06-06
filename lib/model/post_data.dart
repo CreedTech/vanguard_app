@@ -17,8 +17,9 @@ class PostData {
     required this.excerpt,
     required this.categories,
     required this.tags,
-    required this.embedded,
+    // required this.embedded,
     required this.author,
+    required this.banner,
   });
 
   int id;
@@ -30,7 +31,8 @@ class PostData {
   Content excerpt;
   List<int> categories;
   List<int> tags;
-  Embedded embedded;
+  // Embedded embedded;
+  String banner;
 
   factory PostData.fromJson(Map<String, dynamic> json) => PostData(
         id: json["id"],
@@ -41,7 +43,18 @@ class PostData {
         excerpt: Content.fromJson(json["excerpt"]),
         categories: List<int>.from(json["categories"].map((x) => x)),
         tags: List<int>.from(json["tags"].map((x) => x)),
-        embedded: Embedded.fromJson(json["_embedded"]),author: json['yoast_head_json']['author'],
+        banner: json['_embedded']['wp:featuredmedia']?[0]['source_url'] ?? ''
+        //  json['_embedded'].containsKey('wp:featuredmedia')
+        //     ? json['_embedded']['wp:featuredmedia'][0]['media_details']['sizes']
+        //         ['full']['source_url']
+        //     : (json['_embedded']['wp:featuredmedia'][0]
+        //             .containsKey('media_details')
+        //         ? json['_embedded']['wp:featuredmedia'][0]['media_details']
+        //             ['sizes']['full']['source_url']
+        //         : '')
+                ,
+        // embedded: Embedded.fromJson(json["_embedded"]),
+        author: json['yoast_head_json']['author'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,7 +66,9 @@ class PostData {
         "excerpt": excerpt.toJson(),
         "categories": List<dynamic>.from(categories.map((x) => x)),
         "tags": List<dynamic>.from(tags.map((x) => x)),
-        "_embedded": embedded.toJson(),"author": author,
+        // "_embedded": embedded.toJson(),
+        "author": author,
+        "banner": banner,
       };
 }
 
@@ -83,27 +98,27 @@ class Content {
       };
 }
 
-class Embedded {
-  Embedded({
-    // required this.author,
-    required this.wpFeaturedmedia,
-  });
+// class Embedded {
+//   Embedded({
+//     // required this.author,
+//     required this.wpFeaturedmedia,
+//   });
 
-  // EmbeddedAuthor author;
-  List<WpFeaturedmedia> wpFeaturedmedia;
+//   // EmbeddedAuthor author;
+//   List<WpFeaturedmedia> wpFeaturedmedia;
 
-  factory Embedded.fromJson(Map<String, dynamic> json) => Embedded(
-        // author:json['yoast_head_json']['author'],
-        wpFeaturedmedia: List<WpFeaturedmedia>.from(
-            json["wp:featuredmedia"].map((x) => WpFeaturedmedia.fromJson(x))),
-      );
+//   factory Embedded.fromJson(Map<String, dynamic> json) => Embedded(
+//         // author:json['yoast_head_json']['author'],
+//         wpFeaturedmedia: List<WpFeaturedmedia>.from(
+//             json["wp:featuredmedia"].map((x) => WpFeaturedmedia.fromJson(x))),
+//       );
 
-  Map<String, dynamic> toJson() => {
-        // "author": author,
-        "wp:featuredmedia":
-            List<dynamic>.from(wpFeaturedmedia.map((x) => x.toJson())),
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         // "author": author,
+//         "wp:featuredmedia":
+//             List<dynamic>.from(wpFeaturedmedia.map((x) => x.toJson())),
+//       };
+// }
 
 class EmbeddedAuthor {
   EmbeddedAuthor({
@@ -123,7 +138,7 @@ class EmbeddedAuthor {
   Map<String, dynamic> toJson() => {
         "name": name,
         // "avatar_urls":
-            // Map.from(avatarUrls).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        // Map.from(avatarUrls).map((k, v) => MapEntry<String, dynamic>(k, v)),
       };
 }
 
@@ -145,18 +160,20 @@ class TitleContent {
 
 class WpFeaturedmedia {
   WpFeaturedmedia({
-    required this.mediaDetails,
+    this.mediaDetails,
   });
 
-  MediaDetails mediaDetails;
+  MediaDetails? mediaDetails;
 
   factory WpFeaturedmedia.fromJson(Map<String, dynamic> json) =>
       WpFeaturedmedia(
-        mediaDetails: MediaDetails.fromJson(json["media_details"]),
+        mediaDetails: json["media_details"] != null
+            ? MediaDetails.fromJson(json["media_details"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
-        "media_details": mediaDetails.toJson(),
+        "media_details": mediaDetails?.toJson(),
       };
 }
 

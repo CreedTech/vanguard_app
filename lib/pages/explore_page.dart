@@ -16,6 +16,8 @@ class _ExplorePageState extends State<ExplorePage> {
     for (var i = 0; i < categoryMap!.length; i++) {
       final categoryName = categoryNames[i];
       final categoryId = categoryIdList[i];
+      // print("categoryCards");
+      // print(categoryCards);
 
       categoryCards.add(CategoryCard(
         categoryName: categoryName,

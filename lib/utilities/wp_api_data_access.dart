@@ -4,17 +4,17 @@ Map apiDataAccess(PostData postData) {
   final postId = postData.id;
   final link = postData.link;
   final title = postData.title.rendered;
-  var media = postData.embedded.wpFeaturedmedia[0].mediaDetails;
-  String imageUrl;
-  if (media.sizes["medium_large"] != null) {
-    imageUrl = media.sizes["medium_large"]!.sourceUrl;
-  } else if (media.sizes["large"] != null) {
-    imageUrl = media.sizes["large"]!.sourceUrl;
-  } else if (media.sizes["full"] != null) {
-    imageUrl = media.sizes["full"]!.sourceUrl;
-  } else {
-    imageUrl = "";
-  }
+  var media = postData.banner;
+  String imageUrl = postData.banner;
+  // if (media!.sizes["medium_large"] != null) {
+  //   imageUrl = media.sizes["medium_large"]!.sourceUrl;
+  // } else if (media.sizes["large"] != null) {
+  //   imageUrl = media.sizes["large"]!.sourceUrl;
+  // } else if (media.sizes["full"] != null) {
+  //   imageUrl = media.sizes["full"]!.sourceUrl;
+  // } else {
+  //   imageUrl = "";
+  // }
 
   final shortDesc = postData.excerpt.rendered;
   final content = postData.content.rendered;
@@ -30,11 +30,12 @@ Map apiDataAccess(PostData postData) {
     "imageUrl": imageUrl,
     "shortDesc": shortDesc,
     "content": content,
-    // "avatarUrl": avatarUrl,
+    // "banner": banner,
     "authorName": authorName,
     "categoryIdNumbers": categoryIdNumbers,
     "date": date,
   };
+  // print(apiData);
 
   return apiData;
 }

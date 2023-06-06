@@ -36,7 +36,7 @@ void main(List<String> args) async {
   globals.appNavigator = GlobalKey<NavigatorState>();
 
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
+  // MobileAds.instance.initialize();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   // await Hive.initFlutter();
@@ -137,15 +137,16 @@ class _MainHomeState extends State<MainHome> {
   //     }
   //   });
   // }
-  // Future<InitializationStatus> _initGoogleMobileAds() {
-  //   return MobileAds.instance.initialize();
-  // }
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    return MobileAds.instance.initialize();
+  }
 
   @override
   void initState() {
     // initPlatformState();
     Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
     // Provider.of<WeatherData>(context, listen: false).setWeatherData();
+    getHomeCategory();
     getCategory();
     super.initState();
   }
@@ -175,7 +176,12 @@ class _MainHomeState extends State<MainHome> {
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 20),
-          child: Image.asset("assets/images/splash.png", height: 200,width: 250,scale: 4,),
+          child: Image.asset(
+            "assets/images/splash.png",
+            height: 200,
+            width: 250,
+            scale: 4,
+          ),
         ),
         leadingWidth: MediaQuery.of(context).size.width < 300 ? 200 : 150,
         // leading: TextButton(
@@ -206,7 +212,10 @@ class _MainHomeState extends State<MainHome> {
               //     MaterialPageRoute(
               //         builder: ((context) => const NotificationPage())));
             },
-            icon: const Icon(CustomIcon.notification,color: kSecondaryColor,),
+            icon: const Icon(
+              CustomIcon.notification,
+              color: kSecondaryColor,
+            ),
             iconSize: iconSize,
           ),
           const SizedBox(width: 10),
@@ -230,9 +239,9 @@ class _MainHomeState extends State<MainHome> {
           child: GNav(
             selectedIndex: navBarIndex,
             gap: 8,
-            activeColor:Colors.black,
+            activeColor: Colors.black,
             // isDarkTheme ? Colors.white : Colors.black,
-            tabBackgroundColor:Colors.black.withOpacity(0.03),
+            tabBackgroundColor: Colors.black.withOpacity(0.03),
             // isDarkTheme
             //     ? const Color.fromARGB(255, 36, 36, 71)
             //     : Colors.black.withOpacity(0.03),
@@ -271,17 +280,6 @@ class _MainHomeState extends State<MainHome> {
                     if (mounted) {
                       setState(() {
                         navBarIndex = 2;
-                        appBarTitle =
-                            AppLocalizations.of(context)!.settings.toUpperCase();
-                      });
-                    }
-                    break;
-                  }
-                case 3:
-                  {
-                    if (mounted) {
-                      setState(() {
-                        navBarIndex = 3;
                         appBarTitle = AppLocalizations.of(context)!
                             .settings
                             .toUpperCase();
@@ -289,6 +287,18 @@ class _MainHomeState extends State<MainHome> {
                     }
                     break;
                   }
+                // case 3:
+                //   {
+                //     if (mounted) {
+                //       setState(() {
+                //         navBarIndex = 3;
+                //         appBarTitle = AppLocalizations.of(context)!
+                //             .settings
+                //             .toUpperCase();
+                //       });
+                //     }
+                //     break;
+                //   }
               }
             },
             tabs: [
@@ -302,7 +312,6 @@ class _MainHomeState extends State<MainHome> {
                 iconSize: iconSize,
                 text: AppLocalizations.of(context)!.explore,
               ),
-
               GButton(
                 icon: Icons.settings_outlined,
                 iconSize: iconSize,

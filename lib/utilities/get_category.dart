@@ -2,10 +2,13 @@ import '../services/netwroking.dart';
 import 'config.dart';
 
 Map<String, String>? categoryMap = {};
+Map<String, String>? homeCategoryMap = {};
 
 List<String> categoryNames = [];
+List<String> homeCategoryNames = [];
 
 List<int> categoryIdList = [];
+List<int> homeCategoryIdList = [];
 
 void getCategory() async {
   NetworkHelper networkHelper = NetworkHelper(
@@ -20,4 +23,24 @@ void getCategory() async {
 
     categoryMap!["$categoryidNumber"] = categoryName;
   }
+}
+
+
+void getHomeCategory() async {
+  NetworkHelper networkHelper = NetworkHelper(
+      "https://www.vanguardngr.com/wp-json/categorylist/v1/cats/");
+
+  List dataOfHomeCategory = await networkHelper.fetchCategories();
+  for (var i = 0; i < dataOfHomeCategory.length; i++) {
+    var homeCategoryName = dataOfHomeCategory[i]['title'];
+    var homeCategoryidNumber = int.parse(dataOfHomeCategory[i]['tag_id']);
+    homeCategoryNames.add(homeCategoryName);
+    homeCategoryIdList.add(homeCategoryidNumber);
+
+    homeCategoryMap!["$homeCategoryidNumber"] = homeCategoryName;
+    // print(homeCategoryIdList);
+    // print(homeCategoryidNumber);
+    // print(homeCategoryName);
+  }
+    // print(homeCategoryNames);
 }

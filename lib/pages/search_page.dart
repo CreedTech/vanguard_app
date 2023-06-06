@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:Vanguard/utilities/constants.dart';
 import '../utilities/config.dart';
 import '../model/post_data.dart';
+import '../utilities/constants.dart';
 import '../utilities/wp_api_data_access.dart';
 import '../widgets/news_card_skeleton.dart';
 // import '../widgets/shimmer_effect.dart';
+import 'package:dio/dio.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -22,17 +25,27 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
 
   Future<bool> getSearchData({searchTittle}) async {
-    final Uri searchesArticle =
-        Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
-    final response = await http.get(searchesArticle);
+  final dio = Dio();
+  final Uri searchesArticle =
+      Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
+
+  try {
+    final response = await dio.get(searchesArticle.toString());
+
     if (response.statusCode == 200) {
-      final result = postDataFromJson(response.body);
+       final jsonStr = json.encode(response.data);
+      final result = postDataFromJson(jsonStr);
       searchPosts.value = result;
       return true;
     }
-
-    return false;
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error getting search data: $e');
+    }
   }
+
+  return false;
+}
 
   @override
   void dispose() {
