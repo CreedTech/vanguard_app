@@ -2,14 +2,15 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Vanguard/hivedb/db_function.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../hivedb/local_db.dart';
 // import '../utilities/constants.dart';
 import '../customIcon/custom_icons.dart';
 import '../hivedb/boxes.dart';
-// import '../providers/theme_provider.dart';
+import '../providers/theme_provider.dart';
+import '../utilities/constants.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -36,6 +37,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
+         backgroundColor: kSecondaryColor,
         title: Text(AppLocalizations.of(context)!.notfication),
         actions: const [
           IconButton(
@@ -44,8 +46,8 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ],
       ),
-      body: ValueListenableBuilder<Box<SaveNotification>>(
-        valueListenable: Boxes.saveNotification().listenable(),
+      body: ValueListenableBuilder<Box>(
+        valueListenable: Hive.box('savenotification').listenable(),
         builder: (context, box, _) {
           if (box.isEmpty) {
             return Padding(

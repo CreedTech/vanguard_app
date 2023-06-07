@@ -6,13 +6,13 @@ import 'package:flutter_html/flutter_html.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:Vanguard/utilities/get_category.dart';
 // import 'package:progressive_image/progressive_image.dart';
-// import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 
 // import '../customIcon/custom_icons.dart';
-// import '../hiveDB/db_function.dart';
-// import '../hivedb/boxes.dart';
+import '../hiveDB/db_function.dart';
+import '../hivedb/boxes.dart';
 import '../pages/news_details_page.dart';
-// import '../providers/theme_provider.dart';
+import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 // import 'package:flare_flutter/flare_actor.dart';
@@ -51,28 +51,29 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
   bool isSave = false;
 
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  BannerAd(
-    adUnitId: AdHelper.bannerAdUnitId,
-    request: const AdRequest(),
-    size: AdSize.banner,
-    listener: BannerAdListener(
-      onAdLoaded: (ad) {
-        setState(() {
-          _bannerAd = ad as BannerAd;
-        });
-      },
-      onAdFailedToLoad: (ad, err) {
-        if (kDebugMode) {
-          print('Failed to load a banner ad: ${err.message}');
-        }
-        ad.dispose();
-      },
-    ),
-  ).load();
-}
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          if (kDebugMode) {
+            print('Failed to load a banner ad: ${err.message}');
+          }
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final isDarkTheme = Provider.of<ThemeProvider>(context).darkTheme;
@@ -85,19 +86,19 @@ void initState() {
       child: Column(
         children: [
           if (_bannerAd != null)
-          Container(
-            margin: const EdgeInsets.only(top: 8),
-            width: double.infinity,
-            height: 100,
-            decoration:  const BoxDecoration(
-              color: Colors.white,
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              width: double.infinity,
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
                 // border: Border.all(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(
+                borderRadius: BorderRadius.all(
                   Radius.circular(5.0),
+                ),
               ),
+              child: AdWidget(ad: _bannerAd!),
             ),
-            child: AdWidget(ad: _bannerAd!),
-          ),
           InkWell(
             onTap: () {
               Navigator.push(
@@ -135,28 +136,27 @@ void initState() {
                       height: 100,
                       child: Hero(
                         tag: widget.imageUrl,
-                        child:
-                          CachedNetworkImage(
-                              // width: MediaQuery.of(context).size.width / 2.5,
-                              // height: cardHeight,
-                            imageUrl: widget.imageUrl,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url){
-                              return const CupertinoActivityIndicator(
-                                radius: 20,
-                                color: kSecondaryColor,
-                              );
-                            },
-                            errorWidget: (context, url, error) => Container(
-                              width: MediaQuery.of(context).size.width / 2.5,
-                              height: cardHeight,
-                              decoration: const BoxDecoration(
+                        child: CachedNetworkImage(
+                          // width: MediaQuery.of(context).size.width / 2.5,
+                          // height: cardHeight,
+                          imageUrl: widget.imageUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) {
+                            return const CupertinoActivityIndicator(
+                              radius: 20,
+                              color: kSecondaryColor,
+                            );
+                          },
+                          errorWidget: (context, url, error) => Container(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            height: cardHeight,
+                            decoration: const BoxDecoration(
                                 // borderRadius: BorderRadius.circular(5.0),
 
-                              ),
-                              child: Image.asset('assets/images/logo_full.png'),
-                            ),
+                                ),
+                            child: Image.asset('assets/images/logo_full.png'),
                           ),
+                        ),
                         // ProgressiveImage(
                         //   placeholder:
                         //       const AssetImage('assets/images/loader.gif'),
@@ -309,6 +309,7 @@ void initState() {
         ],
       ),
     );
+
     // return Padding(
     //   padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
     //   child: Card(

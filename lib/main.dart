@@ -1,4 +1,6 @@
+import 'package:Vanguard/pages/notification_page.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:animations/animations.dart'
     show PageTransitionSwitcher, FadeThroughTransition;
@@ -6,7 +8,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 // import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'l10n/l10n.dart';
 import 'providers/connectivity_provider.dart';
 import 'providers/locale_provider.dart';
@@ -16,7 +20,7 @@ import 'package:path_provider/path_provider.dart';
 // import 'providers/weather_provider.dart';
 import 'providers/theme_provider.dart';
 import 'customIcon/custom_icons.dart';
-// import 'pages/notification_page.dart';
+import 'pages/notification_page.dart';
 // import 'widgets/weather_widget.dart';
 import 'utilities/get_category.dart';
 import 'pages/settings_page.dart';
@@ -36,26 +40,27 @@ void main(List<String> args) async {
   globals.appNavigator = GlobalKey<NavigatorState>();
 
   WidgetsFlutterBinding.ensureInitialized();
-  // MobileAds.instance.initialize();
+  MobileAds.instance.initialize();
   final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
+  // Hive.init(appDocumentDir.path);
   // await Hive.initFlutter();
+  await Hive.initFlutter(appDocumentDir.path);
 
-  Hive.registerAdapter(SaveNotificationAdapter());
   Hive.registerAdapter(SaveArticleAdapter());
   Hive.registerAdapter(DarkThemeAdapter());
+  Hive.registerAdapter(SaveNotificationAdapter());
   Hive.registerAdapter(SaveNotificationOnOffAdapter());
 
-  await Hive.openBox<SaveArticle>('saveposts');
-  await Hive.openBox<DarkTheme>('themedata');
-  await Hive.openBox<SaveNotification>('savenotification');
-  await Hive.openBox<SaveNotificationOnOff>('saveNotificationOnOff');
+  await Hive.openBox('saveposts');
+  await Hive.openBox('themedata');
+  await Hive.openBox('savenotification');
+  await Hive.openBox('saveNotificationOnOff');
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ConnectivityProvider>(
         create: (context) => ConnectivityProvider()),
     // ChangeNotifierProvider<WeatherData>(create: (context) => WeatherData()),
-    // ChangeNotifierProvider<ThemeProvider>(create: (context) => ThemeProvider()),
+    ChangeNotifierProvider<ThemeProvider>(create: (context) => ThemeProvider()),
     ChangeNotifierProvider<LocaleProvider>(
         create: (context) => LocaleProvider()),
     ChangeNotifierProvider<NotificationProvider>(
@@ -105,45 +110,42 @@ class _MainHomeState extends State<MainHome> {
   final screens = const [
     HomePage(),
     ExplorePage(),
-    // ExplorePage(),
+     SavePage(),
     SettingsPage(),
   ];
 
   // OneSignal Push Notification init Function
-  // Future<void> initPlatformState() async {
-  //   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-  //   OneSignal.shared.setAppId(Config.oneSignalAppId);
+  Future<void> initPlatformState() async {
+    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+    OneSignal.shared.setAppId(Config.oneSignalAppId);
 
-  //   OneSignal.shared
-  //       .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-  //     saveNotification(
-  //       notificationId: result.notification.notificationId,
-  //       title: result.notification.title ?? "",
-  //       body: result.notification.body,
-  //     );
-  //     globals.appNavigator.currentState!
-  //         .push(MaterialPageRoute(builder: (context) {
-  //       return const NotificationPage();
-  //     }));
-  //   });
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      saveNotification(
+        notificationId: result.notification.notificationId,
+        title: result.notification.title ?? "",
+        body: result.notification.body,
+      );
+      globals.appNavigator.currentState!
+          .push(MaterialPageRoute(builder: (context) {
+        return const NotificationPage();
+      }));
+    });
 
-  //   OneSignal.shared.setNotificationWillShowInForegroundHandler(
-  //       (OSNotificationReceivedEvent event) {
-  //     /// Display Notification, send null to not display
-  //     if (Provider.of<NotificationProvider>(context).checkNotfication) {
-  //       event.complete(event.notification);
-  //     } else {
-  //       event.complete(null);
-  //     }
-  //   });
-  // }
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    return MobileAds.instance.initialize();
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+        (OSNotificationReceivedEvent event) {
+      /// Display Notification, send null to not display
+      if (Provider.of<NotificationProvider>(context).checkNotfication) {
+        event.complete(event.notification);
+      } else {
+        event.complete(null);
+      }
+    });
   }
 
   @override
   void initState() {
-    // initPlatformState();
+    initPlatformState();
     Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
     // Provider.of<WeatherData>(context, listen: false).setWeatherData();
     getHomeCategory();
@@ -198,10 +200,10 @@ class _MainHomeState extends State<MainHome> {
           ),
           IconButton(
             onPressed: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: ((context) => const NotificationPage())));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => const NotificationPage())));
             },
             icon: const Icon(
               CustomIcon.notification,
@@ -272,24 +274,24 @@ class _MainHomeState extends State<MainHome> {
                       setState(() {
                         navBarIndex = 2;
                         appBarTitle = AppLocalizations.of(context)!
+                            .saved
+                            .toUpperCase();
+                      });
+                    }
+                    break;
+                  }
+                case 3:
+                  {
+                    if (mounted) {
+                      setState(() {
+                        navBarIndex = 3;
+                        appBarTitle = AppLocalizations.of(context)!
                             .settings
                             .toUpperCase();
                       });
                     }
                     break;
                   }
-                // case 3:
-                //   {
-                //     if (mounted) {
-                //       setState(() {
-                //         navBarIndex = 3;
-                //         appBarTitle = AppLocalizations.of(context)!
-                //             .settings
-                //             .toUpperCase();
-                //       });
-                //     }
-                //     break;
-                //   }
               }
             },
             tabs: [
@@ -302,6 +304,11 @@ class _MainHomeState extends State<MainHome> {
                 icon: CustomIcon.menu,
                 iconSize: iconSize,
                 // text: AppLocalizations.of(context)!.explore,
+              ),
+              GButton(
+                icon: CustomIcon.love,
+                iconSize: iconSize,
+                // text: AppLocalizations.of(context)!.saved,
               ),
               GButton(
                 icon: Icons.settings_outlined,

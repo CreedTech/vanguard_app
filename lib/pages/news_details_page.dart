@@ -5,14 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-// import 'package:hive_flutter/adapters.dart';
-// import 'package:provider/provider.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// import '../hiveDB/db_function.dart';
-// import '../hiveDB/boxes.dart';
-// import '../providers/theme_provider.dart';
+import '../hiveDB/db_function.dart';
+import '../hiveDB/boxes.dart';
+import '../providers/theme_provider.dart';
 import '../utilities/constants.dart';
 import '../utilities/get_category.dart';
 import '../utilities/ad_helpers.dart';
@@ -361,81 +361,81 @@ void initState() {
             ),
           ),
         ),
-        // ValueListenableBuilder(
-        //     valueListenable: Boxes.savePosts().listenable(),
-        //     builder: (context, box, _) {
-        //       return Align(
-        //         alignment: Alignment.topRight,
-        //         child: GestureDetector(
-        //           onTap: () {
-        //             // if (Boxes.savePosts().containsKey("${widget.postId}")) {
-        //             //   deleteSavedArticle(postId: widget.postId);
-        //             // } else {
-        //             //   saveArticle(
-        //             //     postId: widget.postId,
-        //             //     imageUrl: widget.imageUrl,
-        //             //     title: widget.title,
-        //             //     shortDescription: widget.shortDescription,
-        //             //     content: widget.content,
-        //             //     date: widget.date,
-        //             //     authorName: widget.authorName,
-        //             //     avatarUrl: widget.avatarUrl,
-        //             //     categoryIdNumbers: widget.categoryIdNumbers,
-        //             //   );
-        //             // }
-        //           },
-        //           child: Boxes.savePosts().containsKey("${widget.postId}")
-        //               ? TweenAnimationBuilder(
-        //                   duration: const Duration(milliseconds: 300),
-        //                   tween: Tween<double>(begin: 28, end: 34),
-        //                   builder:
-        //                       (BuildContext context, dynamic value, child) {
-        //                     return Container(
-        //                       padding: const EdgeInsets.all(8),
-        //                       decoration: BoxDecoration(
-        //                         shape: BoxShape.circle,
-        //                         // color: isDarkTheme
-        //                         //     ? kSlideActiveColor
-        //                         //     : Colors.red,
-        //                         color: Colors.red,
-        //                         boxShadow: [
-        //                           BoxShadow(
-        //                             // color: isDarkTheme
-        //                             //     ? kContentColorLightTheme
-        //                             //     : Colors.grey.withOpacity(0.8),
-        //                             color: Colors.grey.withOpacity(0.8),
-        //                             spreadRadius: 0.3,
-        //                             blurRadius: 0.4,
-        //                             offset: const Offset(
-        //                                 0, 1), // changes position of shadow
-        //                           ),
-        //                         ],
-        //                       ),
-        //                       child: Icon(
-        //                         Icons.favorite,
-        //                         color: Colors.white,
-        //                         size: value - 12,
-        //                       ),
-        //                     );
-        //                   })
-        //               : TweenAnimationBuilder(
-        //                   duration: const Duration(milliseconds: 500),
-        //                   tween: Tween<double>(begin: 34, end: 28),
-        //                   builder:
-        //                       (BuildContext context, dynamic value, child) {
-        //                     return Icon(
-        //                       Icons.favorite_outline,
-        //                       size: value - 2,
-        //                       // color: isDarkTheme
-        //                       //     ? Colors.white
-        //                       //     : Colors.black.withOpacity(0.70),
-        //                       color: Colors.black.withOpacity(0.70),
-        //                     );
-        //                   },
-        //                 ),
-        //         ),
-        //       );
-        //     }),
+        ValueListenableBuilder(
+            valueListenable: Hive.box('saveposts').listenable(),
+            builder: (context, box, _) {
+              return Align(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    if (Hive.box('saveposts').containsKey("${widget.postId}")) {
+                      deleteSavedArticle(postId: widget.postId);
+                    } else {
+                      saveArticle(
+                        postId: widget.postId,
+                        imageUrl: widget.imageUrl,
+                        title: widget.title,
+                        shortDescription: widget.shortDescription,
+                        content: widget.content,
+                        date: widget.date,
+                        authorName: widget.authorName,
+                        avatarUrl: widget.avatarUrl,
+                        categoryIdNumbers: widget.categoryIdNumbers,
+                      );
+                    }
+                  },
+                  child: Hive.box('saveposts').containsKey("${widget.postId}")
+                      ? TweenAnimationBuilder(
+                          duration: const Duration(milliseconds: 300),
+                          tween: Tween<double>(begin: 28, end: 34),
+                          builder:
+                              (BuildContext context, dynamic value, child) {
+                            return Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                // color: isDarkTheme
+                                //     ? kSlideActiveColor
+                                //     : Colors.red,
+                                color: Colors.red,
+                                boxShadow: [
+                                  BoxShadow(
+                                    // color: isDarkTheme
+                                    //     ? kContentColorLightTheme
+                                    //     : Colors.grey.withOpacity(0.8),
+                                    color: Colors.grey.withOpacity(0.8),
+                                    spreadRadius: 0.3,
+                                    blurRadius: 0.4,
+                                    offset: const Offset(
+                                        0, 1), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.favorite,
+                                color: Colors.white,
+                                size: value - 12,
+                              ),
+                            );
+                          })
+                      : TweenAnimationBuilder(
+                          duration: const Duration(milliseconds: 500),
+                          tween: Tween<double>(begin: 34, end: 28),
+                          builder:
+                              (BuildContext context, dynamic value, child) {
+                            return Icon(
+                              Icons.favorite_outline,
+                              size: value - 2,
+                              // color: isDarkTheme
+                              //     ? Colors.white
+                              //     : Colors.black.withOpacity(0.70),
+                              color: Colors.black.withOpacity(0.70),
+                            );
+                          },
+                        ),
+                ),
+              );
+            }),
       ],
     );
   }

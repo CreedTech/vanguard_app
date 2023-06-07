@@ -24,11 +24,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // fetchData(refresh: true).then((result) {
-    //   setState(() {
-    //     isRefresh = false;
-    //   });
-    // });
   }
 
   final RefreshController refreshController =
@@ -36,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   bool isRefresh = true; // Change isRefresh to false
   List<PostData> posts = [];
 
-  Future<bool> fetchData({bool refresh = false}) async {
+  Future<bool> fetchData({bool refresh = true}) async {
     // Simulate data fetching delay
     await Future.delayed(const Duration(seconds: 2));
 
@@ -100,12 +95,8 @@ class _HomePageState extends State<HomePage> {
         });
       }
 
-      var isFirstPage = true;
-      // if (widget.id == 0) {
-      // isFirstPage = await getSliderData();
-      // }
       final result = await fetchData(refresh: true);
-      if (result == true && isFirstPage == true) {
+      if (result == true) {
         if (mounted) {
           setState(() {
             isRefresh = false;

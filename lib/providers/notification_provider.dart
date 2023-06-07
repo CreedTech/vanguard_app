@@ -8,6 +8,7 @@ import '../hivedb/local_db.dart';
 
 class NotificationProvider extends ChangeNotifier {
   late bool _checkNotfication;
+  Box? codeBox;
 
   bool get checkNotfication => _checkNotfication;
 
@@ -22,14 +23,14 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   saveNotificationData() {
-    final box = Hive.box<SaveNotificationOnOff>('saveNotificationOnOff');
+    final box = Hive.box('saveNotificationOnOff');
     final isNotficationOn = SaveNotificationOnOff()
       ..isNotficationOn = _checkNotfication;
     box.put("isNotficationOn", isNotficationOn);
   }
 
   loadNotificationData() {
-    final data = Boxes.saveNotificationOnOff().get("isNotficationOn");
+    final data = Hive.box('saveNotificationOnOff').get("isNotficationOn");
     if (data != null) {
       _checkNotfication = data.isNotficationOn;
     }

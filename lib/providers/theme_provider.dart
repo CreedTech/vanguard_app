@@ -6,30 +6,33 @@ import '../hivedb/boxes.dart';
 import '../hivedb/local_db.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  late bool _darkTheme;
+  bool _darkTheme = false;
 
   bool get darkTheme => _darkTheme;
 
   ThemeProvider() {
-    _darkTheme = false;
     loadThemeData();
   }
-  toggleTheme() {
+
+  void toggleTheme() {
     _darkTheme = !_darkTheme;
     saveThemeData();
     notifyListeners();
   }
 
-  saveThemeData() {
-    final box = Hive.box<DarkTheme>('themedata');
+  void saveThemeData() async {
+    final box = await Hive.openBox('themedata');
     final theme = DarkTheme()..darkTheme = _darkTheme;
-    box.put("darkTheme", theme);
+    await box.put("darkTheme", theme);
+    await box.close();
   }
 
-  loadThemeData() {
-    final data = Boxes.saveTheme().get("darkTheme");
+  void loadThemeData() async {
+    final box = await Hive.openBox('themedata');
+    final data = box.get("darkTheme");
     if (data != null) {
       _darkTheme = data.darkTheme;
     }
+    await box.close();
   }
 }
