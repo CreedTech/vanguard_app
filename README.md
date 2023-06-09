@@ -23,7 +23,6 @@ This project uses Flutter.
 * External links, videos, embed, HTML tags and audios in between blogs support
 * Much More
 
-<a href="https://www.buymeacoffee.com/ihraihan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 <img src="https://github.com/ihraihan/Complete-Flutter-News-App/blob/master/screenshots/1%20(1).jpg" width="250">|&nbsp;
 <img src="https://github.com/ihraihan/Complete-Flutter-News-App/blob/master/screenshots/1%20(3).jpg" width="250">|&nbsp;
