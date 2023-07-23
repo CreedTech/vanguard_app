@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:Vanguard/utilities/get_category.dart';
 // import 'package:progressive_image/progressive_image.dart';
@@ -85,37 +86,25 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          if (_bannerAd != null)
-            Container(
-              margin: const EdgeInsets.only(top: 8),
-              width: double.infinity,
-              height: 100,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                // border: Border.all(color: Colors.redAccent),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
-              child: AdWidget(ad: _bannerAd!),
-            ),
           InkWell(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewsDetailsPage(
-                            postId: widget.postId,
-                            link: widget.link,
-                            title: widget.title,
-                            imageUrl: widget.imageUrl,
-                            content: widget.content,
-                            date: widget.date,
-                            avatarUrl: widget.avatarUrl,
-                            authorName: widget.authorName,
-                            categoryIdNumbers: widget.categoryIdNumbers,
-                            shortDescription: widget.shortDescription,
-                          )));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewsDetailsPage(
+                    postId: widget.postId,
+                    link: widget.link,
+                    title: widget.title,
+                    imageUrl: widget.imageUrl,
+                    content: widget.content,
+                    date: widget.date,
+                    avatarUrl: widget.avatarUrl,
+                    authorName: widget.authorName,
+                    categoryIdNumbers: widget.categoryIdNumbers,
+                    shortDescription: widget.shortDescription,
+                  ),
+                ),
+              );
             },
             child: Container(
               height: 100,
@@ -142,9 +131,9 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
                           imageUrl: widget.imageUrl,
                           fit: BoxFit.cover,
                           placeholder: (context, url) {
-                            return const CupertinoActivityIndicator(
-                              radius: 20,
+                            return const SpinKitFadingCircle(
                               color: kSecondaryColor,
+                              size: 30.0,
                             );
                           },
                           errorWidget: (context, url, error) => Container(
@@ -306,6 +295,20 @@ class _NewsCardSkeletonState extends State<NewsCardSkeleton> {
               ),
             ),
           ),
+          if (_bannerAd != null)
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              width: double.infinity,
+              height: 100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // border: Border.all(color: Colors.redAccent),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: AdWidget(ad: _bannerAd!),
+            ),
         ],
       ),
     );

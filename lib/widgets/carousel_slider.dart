@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:progressive_image/progressive_image.dart';
 // import 'package:provider/provider.dart';
 import '../model/post_data.dart';
@@ -14,7 +15,6 @@ import '../pages/news_details_page.dart';
 import '../utilities/constants.dart';
 import '../utilities/responsive_height.dart';
 import '../utilities/wp_api_data_access.dart';
-import '../utilities/ad_helpers.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SliderWidget extends StatefulWidget {
@@ -30,32 +30,12 @@ class SliderWidget extends StatefulWidget {
 }
 
 class _SliderWidgetState extends State<SliderWidget> {
-  BannerAd? _bannerAd;
   int currentPos = 0;
 
   @override
-void initState() {
-  super.initState();
-
-  BannerAd(
-    adUnitId: AdHelper.bannerAdUnitId,
-    request: const AdRequest(),
-    size: AdSize.banner,
-    listener: BannerAdListener(
-      onAdLoaded: (ad) {
-        setState(() {
-          _bannerAd = ad as BannerAd;
-        });
-      },
-      onAdFailedToLoad: (ad, err) {
-        if (kDebugMode) {
-          print('Failed to load a banner ad: ${err.message}');
-        }
-        ad.dispose();
-      },
-    ),
-  ).load();
-}
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,23 +45,6 @@ void initState() {
     double sliderHeight = sliderDynamicScreen(screenHeight);
     return Column(
       children: [
-         if (_bannerAd != null)
-        Padding(
-          padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-          child: Container(
-            // margin: const EdgeInsets.only(top: 8),
-            width: double.infinity,
-            height: 100,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.0),
-              ),
-            ),
-            child: AdWidget(ad: _bannerAd!),
-          ),
-        ),
         CarouselSlider.builder(
           itemCount: widget.sliderPosts.length,
           itemBuilder: (context, indexOfSlider, realIndex) {
@@ -130,9 +93,9 @@ void initState() {
                                   // borderRadius: BorderRadius.circular(5.0),
 
                                   ),
-                              child: const CupertinoActivityIndicator(
-                                radius: 20,
+                              child: const SpinKitFadingCircle(
                                 color: kSecondaryColor,
+                                size: 30.0,
                               ),
                             );
                           },

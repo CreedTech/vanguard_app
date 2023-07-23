@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:hive/hive.dart';
 import '../model/post_data.dart';
 import '../providers/connectivity_provider.dart';
@@ -23,10 +24,8 @@ class NewsCard extends StatefulWidget {
   const NewsCard({
     Key? key,
     required this.id,
-    required this.name,
   }) : super(key: key);
   final int? id;
-  final String? name;
 
   @override
   State<NewsCard> createState() => _NewsCardState();
@@ -44,48 +43,48 @@ class _NewsCardState extends State<NewsCard> {
   List<PostData> sliderPosts = [];
   List<PostData> posts = [];
 
-  // Future<bool> getSliderData() async {
-  //   final dio = Dio();
-  //   final Uri latestPostUrls = Uri.parse(
-  //       "${Config.apiURL}${Config.categoryPostURL}14072 &page=$currentPage");
+  Future<bool> getSliderData() async {
+    final dio = Dio();
+    final Uri latestPostUrls = Uri.parse(
+        "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
 
-  //   try {
-  //     final response = await dio.get(latestPostUrls.toString());
+    try {
+      final response = await dio.get(latestPostUrls.toString());
 
-  //     if (response.statusCode == 200) {
-  //       final jsonStr = json.encode(response.data);
-  //       final result = postDataFromJson(jsonStr);
-  //       sliderPosts = result;
-  //       return true;
-  //     }
-  //   } catch (e) {
-  //     if (kDebugMode) {
-  //       print('Error getting slider data: $e');
-  //     }
-  //   }
+      if (response.statusCode == 200) {
+        final jsonStr = json.encode(response.data);
+        final result = postDataFromJson(jsonStr);
+        sliderPosts = result;
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting slider data: $e');
+      }
+    }
 
-  //   return false;
-  // }
+    return false;
+  }
 
   Future<bool> getPostData({bool refresh = false}) async {
     if (refresh) {
       if (mounted) {
         setState(() {});
-        currentPage = 1;
+        currentPage = widget.id == 30762 ? 2 : 1;
       }
     }
     final dio = Dio();
-    // final Uri latestPostUrls = Uri.parse(
-    //     "${Config.apiURL}${Config.categoryPostURL}14072 &page=$currentPage");
+    final Uri latestPostUrls = Uri.parse(
+        "${Config.apiURL}${Config.categoryPostURL}30762 &page=$currentPage");
     final Uri categoryWiseUrls =
         Uri.parse("${Config.apiURL}${Config.categoryPostURL}${widget.id}");
 
-    // final response = await dio.get(widget.id == 14072
-    //     ? latestPostUrls.toString()
-    //     : categoryWiseUrls.toString());
-    final response = await dio.get(categoryWiseUrls.toString());
-    print("response");
-    print(response);
+    final response = await dio.get(widget.id == 30762
+        ? latestPostUrls.toString()
+        : categoryWiseUrls.toString());
+    // final response = await dio.get(categoryWiseUrls.toString());
+    // print("response");
+    // print(response);
 
     if (response.statusCode == 200) {
       final jsonStr = json.encode(response.data);
@@ -121,9 +120,9 @@ class _NewsCardState extends State<NewsCard> {
       }
 
       var isFirstPage = true;
-      // if (widget.id == 0) {
-      // isFirstPage = await getSliderData();
-      // }
+      if (widget.id == 30762) {
+        isFirstPage = await getSliderData();
+      }
       final result = await getPostData(refresh: true);
       if (result == true && isFirstPage == true) {
         if (mounted) {
@@ -167,9 +166,10 @@ class _NewsCardState extends State<NewsCard> {
           if (mode == LoadStatus.idle) {
             body = const Text("pull up load");
           } else if (mode == LoadStatus.loading) {
-            body = const CupertinoActivityIndicator(
-              color: kSecondaryColor,
-            );
+            body = const SpinKitFadingCircle(
+                      color: kSecondaryColor,
+                      size: 30.0,
+                    );
           } else if (mode == LoadStatus.failed) {
             body = const Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
@@ -191,9 +191,9 @@ class _NewsCardState extends State<NewsCard> {
                   child: SizedBox(
                     width: 200,
                     height: 200,
-                    child: CupertinoActivityIndicator(
-                      radius: 20,
+                    child: SpinKitFadingCircle(
                       color: kSecondaryColor,
+                      size: 30.0,
                     ),
                   ),
                 ),
@@ -210,22 +210,6 @@ class _NewsCardState extends State<NewsCard> {
                     return Column(
                       children: [
                         const SizedBox.shrink(),
-                        NewsCardSkeleton(
-                          postId: apiData["id"],
-                          link: apiData["link"],
-                          title: apiData["title"],
-                          imageUrl: apiData["imageUrl"],
-                          content: apiData["content"],
-                          date: apiData["date"],
-                          avatarUrl: apiData["avatarUrl"],
-                          authorName: apiData["authorName"],
-                          categoryIdNumbers: apiData["categoryIdNumbers"],
-                          shortDescription: apiData["shortDesc"],
-                        ),
-                        // if (index == 0 && widget.id == 14072)
-                        //   SliderWidget(sliderPosts: sliderPosts)
-                        // else
-                        //   const SizedBox.shrink(),
                         // NewsCardSkeleton(
                         //   postId: apiData["id"],
                         //   link: apiData["link"],
@@ -238,6 +222,22 @@ class _NewsCardState extends State<NewsCard> {
                         //   categoryIdNumbers: apiData["categoryIdNumbers"],
                         //   shortDescription: apiData["shortDesc"],
                         // ),
+                        if (index == 0 && widget.id == 30762)
+                          SliderWidget(sliderPosts: sliderPosts)
+                        else
+                          const SizedBox.shrink(),
+                        NewsCardSkeleton(
+                          postId: apiData["id"],
+                          link: apiData["link"],
+                          title: apiData["title"],
+                          imageUrl: apiData["imageUrl"],
+                          content: apiData["content"],
+                          date: apiData["date"],
+                          avatarUrl: apiData["avatarUrl"],
+                          authorName: apiData["authorName"],
+                          categoryIdNumbers: apiData["categoryIdNumbers"],
+                          shortDescription: apiData["shortDesc"],
+                        ),
                       ],
                     );
                   },

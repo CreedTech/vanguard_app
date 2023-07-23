@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:Vanguard/widgets/shimmer_effect.dart';
 import '../utilities/config.dart';
 import '../utilities/constants.dart';
@@ -35,56 +36,56 @@ class _CategoryPostsState extends State<CategoryPosts> {
   bool refresh = true;
 
   final RefreshController refreshController = RefreshController();
-Future<bool> getPostData({bool isRefresh = false}) async {
-  if (isRefresh) {
-    if (mounted) {
-      setState(() {});
-      currentPage = 1;
-      refresh = true;
-    }
-  }
-  
-  final Uri categoryWiseUrls = Uri.parse(
-      "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
-  
-  final dio = Dio();
-  try {
-    final response = await dio.get(categoryWiseUrls.toString());
-  
-    if (kDebugMode) {
-      print(response);
-    }
-  
-    if (response.statusCode == 200) {
-      final jsonStr = json.encode(response.data);
-      final result = postDataFromJson(jsonStr);
-  
-      if (kDebugMode) {
-        print(result);
-      }
-  
-      if (isRefresh) {
-        posts = result;
-      } else {
-        posts.addAll(result);
-      }
-  
+  Future<bool> getPostData({bool isRefresh = false}) async {
+    if (isRefresh) {
       if (mounted) {
         setState(() {});
-        currentPage++;
-        refresh = false;
+        currentPage = 1;
+        refresh = true;
       }
-  
-      return true;
     }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error getting post data: $e');
-    }
-  }
 
-  return false;
-}
+    final Uri categoryWiseUrls = Uri.parse(
+        "${Config.apiURL}${Config.categoryPostURL}${widget.categoryId} &page=$currentPage");
+
+    final dio = Dio();
+    try {
+      final response = await dio.get(categoryWiseUrls.toString());
+
+      if (kDebugMode) {
+        print(response);
+      }
+
+      if (response.statusCode == 200) {
+        final jsonStr = json.encode(response.data);
+        final result = postDataFromJson(jsonStr);
+
+        if (kDebugMode) {
+          print(result);
+        }
+
+        if (isRefresh) {
+          posts = result;
+        } else {
+          posts.addAll(result);
+        }
+
+        if (mounted) {
+          setState(() {});
+          currentPage++;
+          refresh = false;
+        }
+
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting post data: $e');
+      }
+    }
+
+    return false;
+  }
 
   @override
   void initState() {
@@ -112,9 +113,10 @@ Future<bool> getPostData({bool isRefresh = false}) async {
             if (mode == LoadStatus.idle) {
               body = const Text("pull up load");
             } else if (mode == LoadStatus.loading) {
-              body = const CupertinoActivityIndicator(
-                color: kSecondaryColor,
-              );
+              body = const SpinKitFadingCircle(
+                      color: kSecondaryColor,
+                      size: 30.0,
+                    );
             } else if (mode == LoadStatus.failed) {
               body = const Text("Load Failed!Click retry!");
             } else if (mode == LoadStatus.canLoading) {
@@ -152,9 +154,9 @@ Future<bool> getPostData({bool isRefresh = false}) async {
                     child: SizedBox(
                       width: 200,
                       height: 200,
-                      child: CupertinoActivityIndicator(
-                        radius: 20,
+                      child: SpinKitFadingCircle(
                         color: kSecondaryColor,
+                        size: 30.0,
                       ),
                     ),
                   ),
