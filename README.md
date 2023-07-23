@@ -1,13 +1,12 @@
 
 ![alt text](https://raw.githubusercontent.com/ihraihan/Complete-Flutter-News-App/master/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png?raw=true)
-# NewsGig
+# Vanguard
 
 Complete Flutter News App Using Wordpress API
 
 ## Technologies used
 
-This project uses Flutter. The reason I (Raihan) chose Flutter is that I am very comfortable with using the framework and that you only have to write once and can run anywhere.
-
+This project uses Flutter. 
 ## Features included:
 * Shimmer Effect
 * Weather Api
@@ -24,7 +23,6 @@ This project uses Flutter. The reason I (Raihan) chose Flutter is that I am very
 * External links, videos, embed, HTML tags and audios in between blogs support
 * Much More
 
-<a href="https://www.buymeacoffee.com/ihraihan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 <img src="https://github.com/ihraihan/Complete-Flutter-News-App/blob/master/screenshots/1%20(1).jpg" width="250">|&nbsp;
 <img src="https://github.com/ihraihan/Complete-Flutter-News-App/blob/master/screenshots/1%20(3).jpg" width="250">|&nbsp;
