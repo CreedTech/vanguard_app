@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:Vanguard/utilities/constants.dart';
+import 'package:vanguard/utilities/constants.dart';
 
 import '../pages/categorywise_article_page.dart';
 

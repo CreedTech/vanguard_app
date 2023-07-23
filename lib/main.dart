@@ -1,4 +1,4 @@
-import 'package:Vanguard/pages/notification_page.dart';
+import 'package:vanguard/pages/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
