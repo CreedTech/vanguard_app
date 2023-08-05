@@ -1,7 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:Vanguard/hivedb/db_function.dart';
+import 'package:vanguard/hivedb/db_function.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,7 +20,6 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-
   // Box? storeData;
 
   // @override
@@ -31,13 +30,12 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-
     // final isDarkTheme = Provider.of<ThemeProvider>(context).darkTheme;
     double screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-         backgroundColor: kSecondaryColor,
+        backgroundColor: kSecondaryColor,
         title: Text(AppLocalizations.of(context)!.notfication),
         actions: const [
           IconButton(
@@ -89,7 +87,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   return Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Card(
-                      color:null,
+                      color: null,
                       // isDarkTheme ? kSecondaryColor : null,
                       elevation: 1,
                       shape: RoundedRectangleBorder(
@@ -101,8 +99,8 @@ class _NotificationPageState extends State<NotificationPage> {
                           padding: const EdgeInsets.all(12.0),
                           child: ExpandablePanel(
                             theme: const ExpandableThemeData(
-                              iconColor:Colors.black,
-                                  // isDarkTheme ? Colors.white : Colors.black,
+                              iconColor: Colors.black,
+                              // isDarkTheme ? Colors.white : Colors.black,
                               hasIcon: true,
                             ),
                             header: Padding(
@@ -113,7 +111,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                     width: 40,
                                     height: 40,
                                     decoration: BoxDecoration(
-                                        color:Colors.black.withOpacity(0.05),
+                                        color: Colors.black.withOpacity(0.05),
                                         // isDarkTheme
                                         //     ? kPrimaryColor
                                         //     : Colors.black.withOpacity(0.05),

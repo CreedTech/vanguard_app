@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:Vanguard/utilities/constants.dart';
+import 'package:vanguard/utilities/constants.dart';
 
 import '../pages/categorywise_article_page.dart';
 
@@ -43,35 +43,34 @@ class CategoryCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Center(
-                  child:
-                  Html(style: {
-                    "body": Style(
-                      padding: EdgeInsets.zero,
-                      margin: EdgeInsets.zero,
-                      textOverflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      fontSize: FontSize.medium,
-                        color: const Color.fromARGB(240, 255, 255, 255),
-                      fontWeight: FontWeight.bold,
-                      textAlign: TextAlign.center,
-                    ),
-                    // "p": Style(
-                    //   padding: EdgeInsets.zero,
-                    //   margin: EdgeInsets.zero,
-                    //   textOverflow: TextOverflow.ellipsis,
-                    //   maxLines: 2,
-                    //   fontSize: FontSize.large,
-                    //   color: Color.fromARGB(240, 255, 255, 255),
-                    // ),
-                  }, data: categoryName!.toUpperCase()),
-              //     Text(
-              //   categoryName!.toUpperCase(),
-              //   style: const TextStyle(
-              //       fontSize: 20.0,
-              //       overflow: TextOverflow.ellipsis,
-              //       color: Color.fromARGB(240, 255, 255, 255),
-              //       fontWeight: FontWeight.bold),
-              // ),
+                child: Html(style: {
+                  "body": Style(
+                    padding: EdgeInsets.zero,
+                    margin: EdgeInsets.zero,
+                    textOverflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    fontSize: FontSize.medium,
+                    color: const Color.fromARGB(240, 255, 255, 255),
+                    fontWeight: FontWeight.bold,
+                    textAlign: TextAlign.center,
+                  ),
+                  // "p": Style(
+                  //   padding: EdgeInsets.zero,
+                  //   margin: EdgeInsets.zero,
+                  //   textOverflow: TextOverflow.ellipsis,
+                  //   maxLines: 2,
+                  //   fontSize: FontSize.large,
+                  //   color: Color.fromARGB(240, 255, 255, 255),
+                  // ),
+                }, data: categoryName!.toUpperCase()),
+                //     Text(
+                //   categoryName!.toUpperCase(),
+                //   style: const TextStyle(
+                //       fontSize: 20.0,
+                //       overflow: TextOverflow.ellipsis,
+                //       color: Color.fromARGB(240, 255, 255, 255),
+                //       fontWeight: FontWeight.bold),
+                // ),
               ),
             ),
           ),

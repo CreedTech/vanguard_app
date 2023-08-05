@@ -1,7 +1,7 @@
-import 'package:Vanguard/utilities/constants.dart';
+import 'package:vanguard/utilities/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:Vanguard/utilities/get_category.dart';
-import 'package:Vanguard/widgets/category_card.dart';
+import 'package:vanguard/utilities/get_category.dart';
+import 'package:vanguard/widgets/category_card.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key? key}) : super(key: key);

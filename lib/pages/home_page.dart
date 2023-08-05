@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:Vanguard/utilities/get_category.dart';
+import 'package:vanguard/utilities/get_category.dart';
 import 'package:provider/provider.dart';
 import '../model/post_data.dart';
 import '../providers/connectivity_provider.dart';

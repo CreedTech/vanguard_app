@@ -1,4 +1,4 @@
-import 'package:Vanguard/pages/notification_page.dart';
+import 'package:vanguard/pages/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
@@ -110,7 +110,7 @@ class _MainHomeState extends State<MainHome> {
   final screens = const [
     HomePage(),
     ExplorePage(),
-     SavePage(),
+    SavePage(),
     SettingsPage(),
   ];
 
@@ -273,9 +273,8 @@ class _MainHomeState extends State<MainHome> {
                     if (mounted) {
                       setState(() {
                         navBarIndex = 2;
-                        appBarTitle = AppLocalizations.of(context)!
-                            .saved
-                            .toUpperCase();
+                        appBarTitle =
+                            AppLocalizations.of(context)!.saved.toUpperCase();
                       });
                     }
                     break;
