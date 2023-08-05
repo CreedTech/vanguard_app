@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../utilities/config.dart';
 import '../model/post_data.dart';
 import '../utilities/constants.dart';
@@ -25,27 +26,27 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
 
   Future<bool> getSearchData({searchTittle}) async {
-  final dio = Dio();
-  final Uri searchesArticle =
-      Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
+    final dio = Dio();
+    final Uri searchesArticle =
+        Uri.parse("${Config.apiURL}${Config.searchPosts}$searchTittle");
 
-  try {
-    final response = await dio.get(searchesArticle.toString());
+    try {
+      final response = await dio.get(searchesArticle.toString());
 
-    if (response.statusCode == 200) {
-       final jsonStr = json.encode(response.data);
-      final result = postDataFromJson(jsonStr);
-      searchPosts.value = result;
-      return true;
+      if (response.statusCode == 200) {
+        final jsonStr = json.encode(response.data);
+        final result = postDataFromJson(jsonStr);
+        searchPosts.value = result;
+        return true;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting search data: $e');
+      }
     }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error getting search data: $e');
-    }
+
+    return false;
   }
-
-  return false;
-}
 
   @override
   void dispose() {
@@ -107,9 +108,9 @@ class _SearchPageState extends State<SearchPage> {
                                 child: SizedBox(
                                   width: 200,
                                   height: 200,
-                                  child: CupertinoActivityIndicator(
-                                    radius: 20,
+                                  child: SpinKitFadingCircle(
                                     color: kSecondaryColor,
+                                    size: 30.0,
                                   ),
                                 ),
                               ),

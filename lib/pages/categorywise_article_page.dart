@@ -5,7 +5,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 // import 'package:vanguard/widgets/shimmer_effect.dart';
+=======
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:Vanguard/widgets/shimmer_effect.dart';
+>>>>>>> 84a34f64d2c17ea9bf08076a30567a9d48dbe941
 import '../utilities/config.dart';
 import '../utilities/constants.dart';
 import '../utilities/wp_api_data_access.dart';
@@ -112,9 +117,10 @@ class _CategoryPostsState extends State<CategoryPosts> {
             if (mode == LoadStatus.idle) {
               body = const Text("pull up load");
             } else if (mode == LoadStatus.loading) {
-              body = const CupertinoActivityIndicator(
-                color: kSecondaryColor,
-              );
+              body = const SpinKitFadingCircle(
+                      color: kSecondaryColor,
+                      size: 30.0,
+                    );
             } else if (mode == LoadStatus.failed) {
               body = const Text("Load Failed!Click retry!");
             } else if (mode == LoadStatus.canLoading) {
@@ -152,9 +158,9 @@ class _CategoryPostsState extends State<CategoryPosts> {
                     child: SizedBox(
                       width: 200,
                       height: 200,
-                      child: CupertinoActivityIndicator(
-                        radius: 20,
+                      child: SpinKitFadingCircle(
                         color: kSecondaryColor,
+                        size: 30.0,
                       ),
                     ),
                   ),

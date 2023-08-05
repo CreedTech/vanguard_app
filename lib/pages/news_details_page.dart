@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -49,52 +50,51 @@ class NewsDetailsPage extends StatefulWidget {
 
 class _NewsDetailsPageState extends State<NewsDetailsPage>
     with SingleTickerProviderStateMixin {
-
-        BannerAd? _bannerAd;
-        BannerAd? _bannerAd1;
+  BannerAd? _bannerAd;
+  BannerAd? _bannerAd1;
 
   @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
 
-  BannerAd(
-    adUnitId: AdHelper.bannerAdUnitId,
-    request: const AdRequest(),
-    size: AdSize.banner,
-    listener: BannerAdListener(
-      onAdLoaded: (ad) {
-        setState(() {
-          _bannerAd = ad as BannerAd;
-        });
-      },
-      onAdFailedToLoad: (ad, err) {
-        if (kDebugMode) {
-          print('Failed to load a banner ad: ${err.message}');
-        }
-        ad.dispose();
-      },
-    ),
-  ).load();
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          if (kDebugMode) {
+            print('Failed to load a banner ad: ${err.message}');
+          }
+          ad.dispose();
+        },
+      ),
+    ).load();
 
-  BannerAd(
-    adUnitId: AdHelper.bannerAdUnitId,
-    request: const AdRequest(),
-    size: AdSize.banner,
-    listener: BannerAdListener(
-      onAdLoaded: (ad) {
-        setState(() {
-          _bannerAd1 = ad as BannerAd;
-        });
-      },
-      onAdFailedToLoad: (ad, err) {
-        if (kDebugMode) {
-          print('Failed to load a banner ad: ${err.message}');
-        }
-        ad.dispose();
-      },
-    ),
-  ).load();
-}
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd1 = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          if (kDebugMode) {
+            print('Failed to load a banner ad: ${err.message}');
+          }
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,9 +155,9 @@ void initState() {
                   imageUrl: widget.imageUrl!,
                   fit: BoxFit.cover,
                   placeholder: (context, url) {
-                    return const CupertinoActivityIndicator(
-                      radius: 20,
+                    return const SpinKitFadingCircle(
                       color: kSecondaryColor,
+                      size: 30.0,
                     );
                   },
                   errorWidget: (context, url, error) => Container(
@@ -212,19 +212,19 @@ void initState() {
           row2(),
           const SizedBox(height: 14),
           if (_bannerAd != null)
-          Container(
-            // margin: const EdgeInsets.only(top: 8),
-            width: double.infinity,
-            height: 70,
-            decoration:  const BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.0),
+            Container(
+              // margin: const EdgeInsets.only(top: 8),
+              width: double.infinity,
+              height: 70,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // border: Border.all(color: Colors.redAccent),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
               ),
+              child: AdWidget(ad: _bannerAd!),
             ),
-            child: AdWidget(ad: _bannerAd!),
-          ),
           const SizedBox(height: 14),
 
           //Content Widget
@@ -257,19 +257,19 @@ void initState() {
           ),
           const SizedBox(height: 14),
           if (_bannerAd1 != null)
-          Container(
-            // margin: const EdgeInsets.only(top: 8),
-            width: double.infinity,
-            height: 70,
-            decoration:  const BoxDecoration(
-              color: Colors.white,
-              // border: Border.all(color: Colors.redAccent),
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.0),
+            Container(
+              // margin: const EdgeInsets.only(top: 8),
+              width: double.infinity,
+              height: 70,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // border: Border.all(color: Colors.redAccent),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
               ),
+              child: AdWidget(ad: _bannerAd1!),
             ),
-            child: AdWidget(ad: _bannerAd1!),
-          ),
         ],
       ),
     );

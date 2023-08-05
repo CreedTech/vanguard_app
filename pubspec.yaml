@@ -14,7 +14,12 @@ dependencies:
   animations: ^2.0.3
   cached_network_image: ^3.2.3
   carousel_slider: ^4.1.1
+<<<<<<< HEAD
   connectivity_plus: ^4.0.1
+=======
+  change_app_package_name: ^1.1.0
+  connectivity_plus: ^2.1.0
+>>>>>>> 84a34f64d2c17ea9bf08076a30567a9d48dbe941
   cupertino_icons: ^1.0.2
   dio: ^5.1.1
   expandable: ^5.0.1
@@ -24,6 +29,7 @@ dependencies:
   flutter_html: ^2.2.1
   flutter_localizations:
     sdk: flutter
+  flutter_spinkit: ^5.2.0
   flutter_staggered_grid_view: ^0.6.2
   fluttertoast: ^8.0.9
   google_fonts: ^3.0.1

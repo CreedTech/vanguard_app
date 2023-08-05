@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../model/post_data.dart';
@@ -128,9 +129,10 @@ class _SectionCardState extends State<SectionCard> {
           if (mode == LoadStatus.idle) {
             body = const Text("pull up load");
           } else if (mode == LoadStatus.loading) {
-            body = const CupertinoActivityIndicator(
-              color: kSecondaryColor,
-            );
+            body = const SpinKitFadingCircle(
+                      color: kSecondaryColor,
+                      size: 30.0,
+                    );
           } else if (mode == LoadStatus.failed) {
             body = const Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
@@ -152,9 +154,9 @@ class _SectionCardState extends State<SectionCard> {
                   child: SizedBox(
                     width: 200,
                     height: 200,
-                    child: CupertinoActivityIndicator(
-                      radius: 20,
+                    child: SpinKitFadingCircle(
                       color: kSecondaryColor,
+                      size: 30.0,
                     ),
                   ),
                 ),
