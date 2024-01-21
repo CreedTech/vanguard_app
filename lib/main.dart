@@ -322,3 +322,10 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 }
+
+
+
+// storePassword=K94FKSDKFDDJHKHBKDWjjje
+// keyPassword=K94FKSDKFDDJHKHBKDWjjje
+// keyAlias=upload
+// storeFile=../app/upload-keystore.jks
